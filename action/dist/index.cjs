@@ -29256,11 +29256,21 @@ var main = async () => {
   const octokit = import_github.default.getOctokit(token);
   const owner = import_core.default.getInput("owner");
   const repo = import_core.default.getInput("repo");
-  const config = await attempt(async () => {
+  const rootYml = import_core.default.getInput("root-config");
+  const rootConfig = await attempt(async () => {
+    const buff = await (0, import_promises.readFile)(rootYml);
+    const str = buff.toString();
+    return import_yaml.default.parse(str);
+  }, null);
+  const repoConfig = await attempt(async () => {
     const buff = await (0, import_promises.readFile)("rsac.yml");
     const str = buff.toString();
     return import_yaml.default.parse(str);
   }, null);
+  const config = rootConfig || repoConfig ? {
+    ...rootConfig ?? {},
+    ...repoConfig ?? {}
+  } : null;
   const isConfig = (0, import_typescanner2.scanner)({});
   if (!isConfig(config)) {
     return;

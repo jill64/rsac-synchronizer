@@ -13,11 +13,27 @@ export const main = async () => {
   const owner = core.getInput('owner')
   const repo = core.getInput('repo')
 
-  const config = await attempt(async () => {
+  const rootYml = core.getInput('root-config')
+
+  const rootConfig = await attempt(async () => {
+    const buff = await readFile(rootYml)
+    const str = buff.toString()
+    return yaml.parse(str) as unknown
+  }, null)
+
+  const repoConfig = await attempt(async () => {
     const buff = await readFile('rsac.yml')
     const str = buff.toString()
     return yaml.parse(str) as unknown
   }, null)
+
+  const config =
+    rootConfig || repoConfig
+      ? {
+          ...(rootConfig ?? {}),
+          ...(repoConfig ?? {})
+        }
+      : null
 
   const isConfig = scanner({})
 
