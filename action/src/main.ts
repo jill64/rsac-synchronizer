@@ -2,6 +2,7 @@ import core from '@actions/core'
 import github from '@actions/github'
 import { attempt } from '@jill64/attempt'
 import { readFile } from 'fs/promises'
+import merge from 'lodash/merge.js'
 import { array, scanner, string } from 'typescanner'
 import yaml from 'yaml'
 import { updateBranchProtection } from './updateBranchProtection.js'
@@ -28,12 +29,7 @@ export const main = async () => {
   }, null)
 
   const config =
-    rootConfig || repoConfig
-      ? {
-          ...(rootConfig ?? {}),
-          ...(repoConfig ?? {})
-        }
-      : null
+    rootConfig || repoConfig ? merge({}, rootConfig, repoConfig) : null
 
   const isConfig = scanner({})
 
