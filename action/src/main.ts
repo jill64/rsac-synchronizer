@@ -66,9 +66,7 @@ export const main = async () => {
           token,
           owner: repo.owner.login,
           repo: repo.name,
-          ref: repo.default_branch,
-          // Prevent Recursive Loop
-          rsac_token: ' '
+          ref: repo.default_branch
         }
       })
     )
