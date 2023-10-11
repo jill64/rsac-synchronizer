@@ -44,6 +44,15 @@ export default octoflare(async ({ app, installation, payload }) => {
 
   const octokit = await app.getInstallationOctokit(installation_id)
 
+  const rsac_token =
+    repo === '.github'
+      ? await app.octokit.rest.apps
+          .createInstallationAccessToken({
+            installation_id
+          })
+          .then(({ data }) => data.token)
+      : ''
+
   await octokit.rest.actions.createWorkflowDispatch({
     owner: 'jill64',
     repo: 'rsac-synchronizer',
@@ -51,6 +60,7 @@ export default octoflare(async ({ app, installation, payload }) => {
     ref: 'main',
     inputs: {
       token: installation.token,
+      rsac_token,
       owner,
       repo,
       ref
