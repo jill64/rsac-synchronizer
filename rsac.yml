@@ -7,10 +7,13 @@ branch-protection:
     required_status_checks:
       strict: true
       contexts:
-        - build/build
+        - build / build
         - Ghost Lint
         - Version Integrity
     enforce_admins: true
     required_pull_request_reviews:
       required_approving_review_count: 0
     restrictions: null
+    allow_deletions: false
+    lock_branch: false
+    allow_force_pushes: false
