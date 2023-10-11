@@ -6,7 +6,13 @@ branch-protection:
   main:
     required_status_checks:
       strict: true
-      contexts: []
-    enforce_admins: false
+      contexts: 
+        - build / build
+      checks: 
+        - context: Ghost Lint
+          app_id: 401223
+        - context: Version Integrity
+          app_id: 394746
+    enforce_admins: true
     required_pull_request_reviews:
     restrictions: null
