@@ -37,7 +37,9 @@ export const main = async () => {
     return
   }
 
-  if (repo === '.github') {
+  const rsac_token = core.getInput('rsac_token')
+
+  if (repo === '.github' && rsac_token) {
     const { data: repository } = await octokit.rest.repos.get({
       owner,
       repo
@@ -52,7 +54,6 @@ export const main = async () => {
             org: owner
           })
 
-    const rsac_token = core.getInput('rsac_token')
     const rsac_kit = github.getOctokit(rsac_token)
 
     const result = allRepo.map((repo) =>
@@ -66,13 +67,15 @@ export const main = async () => {
           owner: repo.owner.login,
           repo: repo.name,
           ref: repo.default_branch,
-          /** Prevent Recursive Loop */
+          // Prevent Recursive Loop
           rsac_token: ''
         }
       })
     )
 
     await Promise.all(result)
+
+    return
   }
 
   const existRepository = scanner({
