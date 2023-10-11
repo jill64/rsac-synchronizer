@@ -30870,9 +30870,7 @@ var main = async () => {
           token,
           owner: repo2.owner.login,
           repo: repo2.name,
-          ref: repo2.default_branch,
-          // Prevent Recursive Loop
-          rsac_token: " "
+          ref: repo2.default_branch
         }
       })
     );

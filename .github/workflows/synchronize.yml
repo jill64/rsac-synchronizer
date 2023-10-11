@@ -12,7 +12,7 @@ on:
       ref:
         required: true
       rsac_token:
-        required: true
+        required: false
 
 jobs:
   synchronize:
