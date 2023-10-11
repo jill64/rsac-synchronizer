@@ -21838,12 +21838,12 @@ var require_typeGuard = __commonJS({
       });
     };
     exports.isUnion = isUnion;
-    var isArray = function(array4) {
+    var isArray = function(array3) {
       var conditions = [];
       for (var _i = 1; _i < arguments.length; _i++) {
         conditions[_i - 1] = arguments[_i];
       }
-      return Array.isArray(array4) && array4.every(function(value) {
+      return Array.isArray(array3) && array3.every(function(value) {
         return conditions.some(function(cond) {
           return cond(value);
         });
@@ -21864,8 +21864,8 @@ var require_typeGuard = __commonJS({
       });
     };
     exports.isOptional = isOptional;
-    var isList = function(value, array4) {
-      return array4.length !== 0 && array4.includes(value);
+    var isList = function(value, array3) {
+      return array3.length !== 0 && array3.includes(value);
     };
     exports.isList = isList;
     var isInstanceOf = function(value, constructor) {
@@ -21882,7 +21882,7 @@ var require_scanner = __commonJS({
     exports.__esModule = true;
     exports.scanner = void 0;
     var typeGuard_1 = require_typeGuard();
-    var scanner4 = function(fields, option) {
+    var scanner3 = function(fields, option) {
       return function(value) {
         if (!(0, typeGuard_1.isObject)(value)) {
           if (option === null || option === void 0 ? void 0 : option.outputLog)
@@ -21898,7 +21898,7 @@ var require_scanner = __commonJS({
         });
       };
     };
-    exports.scanner = scanner4;
+    exports.scanner = scanner3;
   }
 });
 
@@ -21928,7 +21928,7 @@ var require_fields = __commonJS({
     exports.Undefined = typeGuard_1.isUndefined;
     exports.Null = typeGuard_1.isNull;
     exports.date = typeGuard_1.isDate;
-    var union3 = function() {
+    var union2 = function() {
       var conditions = [];
       for (var _i = 0; _i < arguments.length; _i++) {
         conditions[_i] = arguments[_i];
@@ -21937,8 +21937,8 @@ var require_fields = __commonJS({
         return typeGuard_1.isUnion.apply(void 0, __spreadArray([value], conditions, false));
       };
     };
-    exports.union = union3;
-    var array4 = function() {
+    exports.union = union2;
+    var array3 = function() {
       var conditions = [];
       for (var _i = 0; _i < arguments.length; _i++) {
         conditions[_i] = arguments[_i];
@@ -21947,7 +21947,7 @@ var require_fields = __commonJS({
         return typeGuard_1.isArray.apply(void 0, __spreadArray([value], conditions, false));
       };
     };
-    exports.array = array4;
+    exports.array = array3;
     var optional2 = function() {
       var conditions = [];
       for (var _i = 0; _i < arguments.length; _i++) {
@@ -21958,9 +21958,9 @@ var require_fields = __commonJS({
       };
     };
     exports.optional = optional2;
-    var list = function(array5) {
+    var list = function(array4) {
       return function(value) {
-        return (0, typeGuard_1.isList)(value, array5);
+        return (0, typeGuard_1.isList)(value, array4);
       };
     };
     exports.list = list;
@@ -24254,7 +24254,7 @@ var require_string = __commonJS({
   "node_modules/.pnpm/yaml@2.3.2/node_modules/yaml/dist/schema/common/string.js"(exports) {
     "use strict";
     var stringifyString = require_stringifyString();
-    var string4 = {
+    var string3 = {
       identify: (value) => typeof value === "string",
       default: true,
       tag: "tag:yaml.org,2002:str",
@@ -24264,7 +24264,7 @@ var require_string = __commonJS({
         return stringifyString.stringifyString(item, ctx, onComment, onChompKeep);
       }
     };
-    exports.string = string4;
+    exports.string = string3;
   }
 });
 
@@ -24435,14 +24435,14 @@ var require_schema = __commonJS({
     var map = require_map();
     var _null = require_null();
     var seq = require_seq();
-    var string4 = require_string();
+    var string3 = require_string();
     var bool = require_bool();
     var float = require_float();
     var int = require_int();
     var schema = [
       map.map,
       seq.seq,
-      string4.string,
+      string3.string,
       _null.nullTag,
       bool.boolTag,
       int.intOct,
@@ -25086,7 +25086,7 @@ var require_schema3 = __commonJS({
     var map = require_map();
     var _null = require_null();
     var seq = require_seq();
-    var string4 = require_string();
+    var string3 = require_string();
     var binary = require_binary();
     var bool = require_bool2();
     var float = require_float2();
@@ -25098,7 +25098,7 @@ var require_schema3 = __commonJS({
     var schema = [
       map.map,
       seq.seq,
-      string4.string,
+      string3.string,
       _null.nullTag,
       bool.trueTag,
       bool.falseTag,
@@ -25128,7 +25128,7 @@ var require_tags = __commonJS({
     var map = require_map();
     var _null = require_null();
     var seq = require_seq();
-    var string4 = require_string();
+    var string3 = require_string();
     var bool = require_bool();
     var float = require_float();
     var int = require_int();
@@ -25142,7 +25142,7 @@ var require_tags = __commonJS({
     var timestamp = require_timestamp();
     var schemas = /* @__PURE__ */ new Map([
       ["core", schema.schema],
-      ["failsafe", [map.map, seq.seq, string4.string]],
+      ["failsafe", [map.map, seq.seq, string3.string]],
       ["json", schema$1.schema],
       ["yaml11", schema$2.schema],
       ["yaml-1.1", schema$2.schema]
@@ -25211,7 +25211,7 @@ var require_Schema = __commonJS({
     var identity = require_identity();
     var map = require_map();
     var seq = require_seq();
-    var string4 = require_string();
+    var string3 = require_string();
     var tags = require_tags();
     var sortMapEntriesByKey = (a, b) => a.key < b.key ? -1 : a.key > b.key ? 1 : 0;
     var Schema = class _Schema {
@@ -25223,7 +25223,7 @@ var require_Schema = __commonJS({
         this.tags = tags.getTags(customTags, this.name);
         this.toStringOptions = toStringDefaults ?? null;
         Object.defineProperty(this, identity.MAP, { value: map.map });
-        Object.defineProperty(this, identity.SCALAR, { value: string4.string });
+        Object.defineProperty(this, identity.SCALAR, { value: string3.string });
         Object.defineProperty(this, identity.SEQ, { value: seq.seq });
         this.sortMapEntries = typeof sortMapEntries === "function" ? sortMapEntries : sortMapEntries === true ? sortMapEntriesByKey : null;
       }
@@ -29201,11 +29201,8 @@ function attempt(func, fallback) {
 
 // action/src/main.ts
 var import_promises = require("fs/promises");
-var import_typescanner3 = __toESM(require_dist(), 1);
-var import_yaml = __toESM(require_dist2(), 1);
-
-// action/src/updateBranchProtection.ts
 var import_typescanner2 = __toESM(require_dist(), 1);
+var import_yaml = __toESM(require_dist2(), 1);
 
 // action/src/isBranchProtection.ts
 var import_typescanner = __toESM(require_dist(), 1);
@@ -29240,22 +29237,7 @@ var updateBranchProtection = async ({
   const branches = Object.keys(protections);
   const result = branches.map(async (branch) => {
     const conf = protections[branch];
-    console.log("branch-protection", branch, conf);
     if (!isBranchProtection(conf)) {
-      console.log("not match", branch, conf);
-      const required_status_checks2 = (0, import_typescanner2.union)(
-        (0, import_typescanner2.scanner)({
-          strict: import_typescanner2.boolean,
-          contexts: (0, import_typescanner2.array)(import_typescanner2.string)
-        }),
-        import_typescanner2.Null
-      );
-      if (conf && typeof conf === "object" && "required_status_checks" in conf) {
-        console.log(
-          "is_required_status_checks",
-          required_status_checks2(conf.required_status_checks)
-        );
-      }
       return;
     }
     await octokit.rest.repos.updateBranchProtection({
@@ -29286,12 +29268,12 @@ var main = async () => {
     }
   );
   console.log("rsac.yml", config);
-  const isConfig = (0, import_typescanner3.scanner)({});
+  const isConfig = (0, import_typescanner2.scanner)({});
   if (!isConfig(config)) {
     return;
   }
-  const existRepository = (0, import_typescanner3.scanner)({
-    repository: (0, import_typescanner3.scanner)({})
+  const existRepository = (0, import_typescanner2.scanner)({
+    repository: (0, import_typescanner2.scanner)({})
   });
   if (existRepository(config)) {
     await octokit.rest.repos.update({
@@ -29300,8 +29282,8 @@ var main = async () => {
       ...config.repository
     });
   }
-  const existBranchProtection = (0, import_typescanner3.scanner)({
-    "branch-protection": (0, import_typescanner3.scanner)({})
+  const existBranchProtection = (0, import_typescanner2.scanner)({
+    "branch-protection": (0, import_typescanner2.scanner)({})
   });
   if (existBranchProtection(config)) {
     updateBranchProtection({
@@ -29311,8 +29293,8 @@ var main = async () => {
       protections: config["branch-protection"]
     });
   }
-  const existTopics = (0, import_typescanner3.scanner)({
-    topics: (0, import_typescanner3.array)(import_typescanner3.string)
+  const existTopics = (0, import_typescanner2.scanner)({
+    topics: (0, import_typescanner2.array)(import_typescanner2.string)
   });
   if (existTopics(config)) {
     await octokit.rest.repos.replaceAllTopics({
