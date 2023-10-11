@@ -12,13 +12,7 @@ import {
 const required_status_checks = union(
   scanner({
     strict: boolean,
-    contexts: array(string),
-    checks: array(
-      scanner({
-        context: string,
-        app_id: optional(number)
-      })
-    )
+    contexts: array(string)
   }),
   Null
 )
