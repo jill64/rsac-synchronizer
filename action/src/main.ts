@@ -37,6 +37,44 @@ export const main = async () => {
     return
   }
 
+  if (repo === '.github') {
+    const { data: repository } = await octokit.rest.repos.get({
+      owner,
+      repo
+    })
+
+    const { data: allRepo } =
+      repository.owner.type !== 'Organization'
+        ? await octokit.rest.repos.listForUser({
+            username: owner
+          })
+        : await octokit.rest.repos.listForOrg({
+            org: owner
+          })
+
+    const rsac_token = core.getInput('rsac_token')
+    const rsac_kit = github.getOctokit(rsac_token)
+
+    const result = allRepo.map((repo) =>
+      rsac_kit.rest.actions.createWorkflowDispatch({
+        owner: 'jill64',
+        repo: 'rsac-synchronizer',
+        workflow_id: 'synchronize.yml',
+        ref: 'main',
+        inputs: {
+          token,
+          owner: repo.owner.login,
+          repo: repo.name,
+          ref: repo.default_branch,
+          /** Prevent Recursive Loop */
+          rsac_token: ''
+        }
+      })
+    )
+
+    await Promise.all(result)
+  }
+
   const existRepository = scanner({
     repository: scanner({})
   })

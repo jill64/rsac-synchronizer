@@ -30848,6 +30848,36 @@ var main = async () => {
   if (!isConfig(config)) {
     return;
   }
+  if (repo === ".github") {
+    const { data: repository } = await octokit.rest.repos.get({
+      owner,
+      repo
+    });
+    const { data: allRepo } = repository.owner.type !== "Organization" ? await octokit.rest.repos.listForUser({
+      username: owner
+    }) : await octokit.rest.repos.listForOrg({
+      org: owner
+    });
+    const rsac_token = import_core.default.getInput("rsac_token");
+    const rsac_kit = import_github.default.getOctokit(rsac_token);
+    const result = allRepo.map(
+      (repo2) => rsac_kit.rest.actions.createWorkflowDispatch({
+        owner: "jill64",
+        repo: "rsac-synchronizer",
+        workflow_id: "synchronize.yml",
+        ref: "main",
+        inputs: {
+          token,
+          owner: repo2.owner.login,
+          repo: repo2.name,
+          ref: repo2.default_branch,
+          /** Prevent Recursive Loop */
+          rsac_token: ""
+        }
+      })
+    );
+    await Promise.all(result);
+  }
   const existRepository = (0, import_typescanner2.scanner)({
     repository: (0, import_typescanner2.scanner)({})
   });
