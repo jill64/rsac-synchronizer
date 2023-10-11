@@ -2,7 +2,6 @@ import {
   Null,
   array,
   boolean,
-  number,
   optional,
   scanner,
   string,
