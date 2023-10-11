@@ -1,3 +1,14 @@
 repository:
   allow_auto_merge: true
   allow_squash_merge: true
+
+branch-protection:
+  main:
+    required_status_checks:
+      strict: true
+      checks:
+        - Ghost Lint
+        - Version Integrity
+    enforce_admins: true
+    required_pull_request_reviews:
+    restrictions: null
