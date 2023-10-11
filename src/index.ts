@@ -1,4 +1,3 @@
-import memoize from 'lodash/memoize.js'
 import { octoflare } from 'octoflare'
 
 export default octoflare(async ({ app, installation, payload }) => {
@@ -26,28 +25,9 @@ export default octoflare(async ({ app, installation, payload }) => {
     })
   }
 
-  const isOwner = memoize(async (name: string) => {
-    if (name === owner) {
-      return true
-    }
-
-    if (repository.owner.type !== 'Organization') {
-      return false
-    }
-
-    const {
-      data: { role }
-    } = await installation.kit.rest.orgs.getMembershipForUser({
-      org: owner,
-      username: name
-    })
-
-    return role === 'admin'
-  })
-
-  const isTriggered = commits
-    .filter((commit) => commit.modified.includes('rsac.yml'))
-    .every((commit) => isOwner(commit.author.name))
+  const isTriggered = commits.some((commit) =>
+    commit.modified.includes('rsac.yml')
+  )
 
   if (!isTriggered) {
     return new Response('Not found valid commit', {
@@ -55,12 +35,14 @@ export default octoflare(async ({ app, installation, payload }) => {
     })
   }
 
-  const octokit = await app.octokit.rest.apps
-    .getRepoInstallation({
-      owner: 'jill64',
-      repo: 'rsac-synchronizer'
-    })
-    .then(({ data: { id } }) => app.getInstallationOctokit(id))
+  const {
+    data: { id: installation_id }
+  } = await app.octokit.rest.apps.getRepoInstallation({
+    owner: 'jill64',
+    repo: 'rsac-synchronizer'
+  })
+
+  const octokit = await app.getInstallationOctokit(installation_id)
 
   await octokit.rest.actions.createWorkflowDispatch({
     owner: 'jill64',
