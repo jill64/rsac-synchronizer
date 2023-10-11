@@ -11,6 +11,8 @@ on:
         required: true
       ref:
         required: true
+      rsac_token:
+        required: true
 
 jobs:
   synchronize:
@@ -41,3 +43,4 @@ jobs:
           repo: ${{ inputs.repo }}
           owner: ${{ inputs.owner }}
           root-config: ${{ steps.root-config.outputs.yml }}
+          rsac_token: ${{ inputs.rsac_token }}

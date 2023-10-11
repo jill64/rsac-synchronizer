@@ -14,6 +14,9 @@ inputs:
   root-config:
     description: Root configuration file
     required: true
+  rsac_token:
+    description: GitHub App Root Token
+    required: true
 
 runs:
   using: node16
