@@ -35,7 +35,7 @@ jobs:
 
       - name: Synchronize
         if: ${{ !cancelled() }}
-        uses: ./
+        uses: jill64/rsac-synchronizer@main
         with:
           token: ${{ inputs.token }}
           repo: ${{ inputs.repo }}
