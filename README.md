@@ -2,6 +2,9 @@
 <img src="./assets/logo.png" width="100px" />
 </div>
 
+[![CI](https://github.com/jill64/rsac-synchronizer/actions/workflows/ci.yml/badge.svg)](https://github.com/jill64/rsac-synchronizer/actions/workflows/ci.yml)
+[![Deploy](https://github.com/jill64/rsac-synchronizer/actions/workflows/deploy.yml/badge.svg)](https://github.com/jill64/rsac-synchronizer/actions/workflows/deploy.yml)
+
 # RSaC Synchronizer
 
 GitHub Repository Settings as Code
