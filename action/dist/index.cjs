@@ -29209,13 +29209,7 @@ var import_typescanner = __toESM(require_dist(), 1);
 var required_status_checks = (0, import_typescanner.union)(
   (0, import_typescanner.scanner)({
     strict: import_typescanner.boolean,
-    contexts: (0, import_typescanner.array)(import_typescanner.string),
-    checks: (0, import_typescanner.array)(
-      (0, import_typescanner.scanner)({
-        context: import_typescanner.string,
-        app_id: (0, import_typescanner.optional)(import_typescanner.number)
-      })
-    )
+    contexts: (0, import_typescanner.array)(import_typescanner.string)
   }),
   import_typescanner.Null
 );
