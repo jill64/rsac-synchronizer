@@ -68,7 +68,7 @@ export const main = async () => {
           repo: repo.name,
           ref: repo.default_branch,
           // Prevent Recursive Loop
-          rsac_token: ''
+          rsac_token: ' '
         }
       })
     )
