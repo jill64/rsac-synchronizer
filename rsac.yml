@@ -8,6 +8,8 @@ branch-protection:
       strict: true
       contexts:
         - build/build
+        - Ghost Lint
+        - Version Integrity
       checks:
         - context: Ghost Lint
           app_id: 401223
