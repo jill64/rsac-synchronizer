@@ -11,6 +11,9 @@ inputs:
   repo:
     description: Repository name
     required: true
+  root-config:
+    description: Root configuration file
+    required: true
 
 runs:
   using: node16

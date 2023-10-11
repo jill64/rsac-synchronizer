@@ -16,15 +16,28 @@ jobs:
   synchronize:
     runs-on: ubuntu-latest
     steps:
+      - name: Root Checkout
+        uses: actions/checkout@8ade135a41bc03ea155e62e844d188df1ea18608 # v4
+        with:
+          repository: ${{ inputs.owner }}/.github
+
+      - name: Get Config
+        if: !cancelled()
+        id: root-config
+        run: echo yml=$(cat .github/synchronize.yml) >> $GITHUB_OUTPUT
+
       - name: Checkout
+        if: !cancelled()
         uses: actions/checkout@8ade135a41bc03ea155e62e844d188df1ea18608 # v4
         with:
           repository: ${{ inputs.owner }}/${{ inputs.repo }}
           ref: ${{ inputs.ref }}
 
       - name: Synchronize
-        uses: jill64/rsac-synchronizer@main
+        if: !cancelled()
+        uses: ./
         with:
           token: ${{ inputs.token }}
           repo: ${{ inputs.repo }}
           owner: ${{ inputs.owner }}
+          root-config: ${{ steps.root-config.outputs.yml }}
