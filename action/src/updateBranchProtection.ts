@@ -17,6 +17,8 @@ export const updateBranchProtection = async ({
   const result = branches.map(async (branch) => {
     const conf = protections[branch]
 
+    console.log('branch-protection', branch, conf)
+
     if (!isBranchProtection(conf)) {
       return
     }
