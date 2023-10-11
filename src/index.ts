@@ -44,11 +44,14 @@ export default octoflare(async ({ app, installation, payload }) => {
 
   const octokit = await app.getInstallationOctokit(installation_id)
 
-  const {
-    data: { token: rsac_token }
-  } = await app.octokit.rest.apps.createInstallationAccessToken({
-    installation_id
-  })
+  const rsac_token =
+    repo === '.github'
+      ? await app.octokit.rest.apps
+          .createInstallationAccessToken({
+            installation_id
+          })
+          .then(({ data }) => data.token)
+      : ''
 
   await octokit.rest.actions.createWorkflowDispatch({
     owner: 'jill64',
