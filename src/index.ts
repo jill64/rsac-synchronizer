@@ -25,8 +25,11 @@ export default octoflare(async ({ app, installation, payload }) => {
     })
   }
 
-  const isTriggered = commits.some((commit) =>
-    commit.modified.includes('rsac.yml')
+  const isTriggered = commits.some(
+    (commit) =>
+      commit.modified.includes('rsac.yml') ||
+      commit.added.includes('rsac.yml') ||
+      commit.removed.includes('rsac.yml')
   )
 
   if (!isTriggered) {
