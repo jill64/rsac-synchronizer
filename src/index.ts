@@ -28,7 +28,7 @@ export default octoflare(async ({ app, installation, payload }) => {
   await app.octokit.rest.actions.createWorkflowDispatch({
     owner: 'jill64',
     repo: 'rsac-synchronizer',
-    workflow_id: 'rsac-synchronizer.yml',
+    workflow_id: 'synchronize.yml',
     ref: 'main',
     inputs: {
       token: installation.token,

@@ -1,0 +1,30 @@
+name: Synchronize
+
+on:
+  workflow_dispatch:
+    inputs:
+      token:
+        required: true
+      owner:
+        required: true
+      repo:
+        required: true
+      ref:
+        required: true
+
+jobs:
+  synchronize:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ inputs.owner }}/${{ inputs.repo }}
+          ref: ${{ inputs.ref }}
+
+      - name: Synchronize
+        uses: jill64/rsac-synchronizer@main
+        with:
+          token: ${{ inputs.token }}
+          repo: ${{ inputs.repo }}
+          owner: ${{ inputs.owner }}
