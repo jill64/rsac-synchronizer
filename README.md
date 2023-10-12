@@ -32,4 +32,9 @@ topics:
   - topic-name-1
   - topic-name-2
   - topic-name-3
+
+# https://docs.github.com/en/rest/actions/permissions?apiVersion=2022-11-28#set-default-workflow-permissions-for-a-repository
+default-workflow-permissions:
+  default_workflow_permissions: read
+  can_approve_pull_request_reviews: false
 ```

@@ -2,6 +2,7 @@ import {
   Null,
   array,
   boolean,
+  isObject,
   optional,
   scanner,
   string,
@@ -20,7 +21,7 @@ const required_status_checks = union(
 export const isBranchProtection = scanner({
   required_status_checks,
   enforce_admins: union(boolean, Null),
-  required_pull_request_reviews: union(scanner({}), Null),
+  required_pull_request_reviews: union(isObject, Null),
   restrictions: union(
     scanner({
       users: array(string),
