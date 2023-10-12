@@ -9,8 +9,6 @@
 
 GitHub Repository Settings as Code
 
-[GitHub App](https://github.com/apps/rsac-synchronizer)
-
 ## rsac.yaml
 
 ```yml
