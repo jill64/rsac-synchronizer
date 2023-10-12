@@ -11,9 +11,6 @@ export const main = async () => {
   const token = core.getInput('token')
   const octokit = github.getOctokit(token)
 
-  const owner = core.getInput('owner')
-  const repo = core.getInput('repo')
-
   const rootYml = core.getInput('root-config')
 
   const rootConfig = attempt(() => yaml.parse(rootYml) as unknown, null)
@@ -28,9 +25,12 @@ export const main = async () => {
     rootConfig || repoConfig ? merge({}, rootConfig, repoConfig) : null
 
   if (!isObject(config)) {
+    console.log('No configuration file found')
     return
   }
 
+  const owner = core.getInput('owner')
+  const repo = core.getInput('repo')
   const rsac_token = core.getInput('rsac_token')
 
   if (repo === '.github' && rsac_token) {
