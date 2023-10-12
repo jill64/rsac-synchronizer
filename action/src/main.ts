@@ -15,14 +15,20 @@ export const main = async () => {
 
   const rootConfig = attempt(() => yaml.parse(rootYml) as unknown, null)
 
+  console.log('rootConfig', rootConfig)
+
   const repoConfig = await attempt(async () => {
     const buff = await readFile('rsac.yml')
     const str = buff.toString()
     return yaml.parse(str) as unknown
   }, null)
 
+  console.log('repoConfig', repoConfig)
+
   const config =
     rootConfig || repoConfig ? merge({}, rootConfig, repoConfig) : null
+
+  console.log('config', config)
 
   if (!isObject(config)) {
     console.log('No configuration file found')
@@ -66,6 +72,8 @@ export const main = async () => {
     )
 
     await Promise.all(result)
+
+    console.log('Triggered all repositories')
 
     return
   }

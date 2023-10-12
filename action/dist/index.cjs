@@ -30864,12 +30864,15 @@ var main = async () => {
   const octokit = import_github.default.getOctokit(token);
   const rootYml = import_core.default.getInput("root-config");
   const rootConfig = attempt(() => import_yaml.default.parse(rootYml), null);
+  console.log("rootConfig", rootConfig);
   const repoConfig = await attempt(async () => {
     const buff = await (0, import_promises.readFile)("rsac.yml");
     const str = buff.toString();
     return import_yaml.default.parse(str);
   }, null);
+  console.log("repoConfig", repoConfig);
   const config = rootConfig || repoConfig ? (0, import_merge.default)({}, rootConfig, repoConfig) : null;
+  console.log("config", config);
   if (!(0, import_typescanner2.isObject)(config)) {
     console.log("No configuration file found");
     return;
@@ -30903,6 +30906,7 @@ var main = async () => {
       })
     );
     await Promise.all(result);
+    console.log("Triggered all repositories");
     return;
   }
   const existRepository = (0, import_typescanner2.scanner)({
