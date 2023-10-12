@@ -44,5 +44,5 @@ jobs:
           token: ${{ inputs.token }}
           repo: ${{ inputs.repo }}
           owner: ${{ inputs.owner }}
-          root-config: ${{ steps.root-config.outputs.yml }}
+          root-config: ${{ steps.root-config.outputs.stdout }}
           rsac_token: ${{ inputs.rsac_token }}
