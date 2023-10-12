@@ -2,7 +2,7 @@ import core from '@actions/core'
 import github from '@actions/github'
 import { attempt } from '@jill64/attempt'
 import { readFile } from 'fs/promises'
-import merge from 'lodash/merge.js'
+import mergeWith from 'lodash/mergeWith.js'
 import { array, isObject, scanner, string } from 'typescanner'
 import yaml from 'yaml'
 import { updateBranchProtection } from './updateBranchProtection.js'
@@ -27,7 +27,7 @@ export const main = async () => {
 
   const config =
     rootConfig || repoConfig
-      ? merge({}, rootConfig, repoConfig, (a: unknown, b: unknown) => {
+      ? mergeWith({}, rootConfig, repoConfig, (a: unknown, b: unknown) => {
           if (Array.isArray(a) && Array.isArray(b)) {
             return [...a, ...b]
           }
