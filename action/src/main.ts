@@ -15,7 +15,7 @@ export const main = async () => {
 
   const rootConfig = attempt(() => yaml.parse(rootYml) as unknown, null)
 
-  console.log('rootConfig', rootConfig)
+  console.log('rootConfig', JSON.stringify(rootConfig, null, 2))
 
   const repoConfig = await attempt(async () => {
     const buff = await readFile('rsac.yml')
@@ -23,7 +23,7 @@ export const main = async () => {
     return yaml.parse(str) as unknown
   }, null)
 
-  console.log('repoConfig', repoConfig)
+  console.log('repoConfig', JSON.stringify(repoConfig, null, 2))
 
   const config =
     rootConfig || repoConfig
@@ -34,7 +34,7 @@ export const main = async () => {
         })
       : null
 
-  console.log('config', config)
+  console.log('merged config', JSON.stringify(config, null, 2))
 
   if (!isObject(config)) {
     console.log('No configuration file found')
