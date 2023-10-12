@@ -7,7 +7,6 @@ import { array, scanner, string, isObject } from 'typescanner'
 import yaml from 'yaml'
 import { updateBranchProtection } from './updateBranchProtection.js'
 
-
 export const main = async () => {
   const token = core.getInput('token')
   const octokit = github.getOctokit(token)
