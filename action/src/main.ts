@@ -29,7 +29,7 @@ export const main = async () => {
     rootConfig || repoConfig
       ? mergeWith({}, rootConfig, repoConfig, (a: unknown, b: unknown) => {
           if (Array.isArray(a) && Array.isArray(b)) {
-            return [...new Set(...a, ...b)]
+            return [...new Set([...a, ...b])]
           }
         })
       : null
