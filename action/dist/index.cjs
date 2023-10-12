@@ -30864,19 +30864,19 @@ var main = async () => {
   const octokit = import_github.default.getOctokit(token);
   const rootYml = import_core.default.getInput("root-config");
   const rootConfig = attempt(() => import_yaml.default.parse(rootYml), null);
-  console.log("rootConfig", rootConfig);
+  console.log("rootConfig", JSON.stringify(rootConfig, null, 2));
   const repoConfig = await attempt(async () => {
     const buff = await (0, import_promises.readFile)("rsac.yml");
     const str = buff.toString();
     return import_yaml.default.parse(str);
   }, null);
-  console.log("repoConfig", repoConfig);
+  console.log("repoConfig", JSON.stringify(repoConfig, null, 2));
   const config = rootConfig || repoConfig ? (0, import_merge.default)({}, rootConfig, repoConfig, (a, b) => {
     if (Array.isArray(a) && Array.isArray(b)) {
       return [...a, ...b];
     }
   }) : null;
-  console.log("config", config);
+  console.log("merged config", JSON.stringify(config, null, 2));
   if (!(0, import_typescanner2.isObject)(config)) {
     console.log("No configuration file found");
     return;
