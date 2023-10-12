@@ -26,7 +26,13 @@ export const main = async () => {
   console.log('repoConfig', repoConfig)
 
   const config =
-    rootConfig || repoConfig ? merge({}, rootConfig, repoConfig) : null
+    rootConfig || repoConfig
+      ? merge({}, rootConfig, repoConfig, (a: unknown, b: unknown) => {
+          if (Array.isArray(a) && Array.isArray(b)) {
+            return [...a, ...b]
+          }
+        })
+      : null
 
   console.log('config', config)
 

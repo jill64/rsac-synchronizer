@@ -30871,7 +30871,11 @@ var main = async () => {
     return import_yaml.default.parse(str);
   }, null);
   console.log("repoConfig", repoConfig);
-  const config = rootConfig || repoConfig ? (0, import_merge.default)({}, rootConfig, repoConfig) : null;
+  const config = rootConfig || repoConfig ? (0, import_merge.default)({}, rootConfig, repoConfig, (a, b) => {
+    if (Array.isArray(a) && Array.isArray(b)) {
+      return [...a, ...b];
+    }
+  }) : null;
   console.log("config", config);
   if (!(0, import_typescanner2.isObject)(config)) {
     console.log("No configuration file found");
