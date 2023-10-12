@@ -3,7 +3,7 @@ import github from '@actions/github'
 import { attempt } from '@jill64/attempt'
 import { readFile } from 'fs/promises'
 import merge from 'lodash/merge.js'
-import { array, scanner, string, isObject } from 'typescanner'
+import { array, isObject, scanner, string } from 'typescanner'
 import yaml from 'yaml'
 import { updateBranchProtection } from './updateBranchProtection.js'
 
@@ -16,11 +16,7 @@ export const main = async () => {
 
   const rootYml = core.getInput('root-config')
 
-  const rootConfig = await attempt(async () => {
-    const buff = await readFile(rootYml)
-    const str = buff.toString()
-    return yaml.parse(str) as unknown
-  }, null)
+  const rootConfig = attempt(() => yaml.parse(rootYml) as unknown, null)
 
   const repoConfig = await attempt(async () => {
     const buff = await readFile('rsac.yml')

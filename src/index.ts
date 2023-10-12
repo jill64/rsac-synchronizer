@@ -3,6 +3,11 @@ import { octoflare } from 'octoflare'
 import { onCreateRepo } from './onCreateRepo.js'
 import { onPush } from './onPush.js'
 
+const originRepo = {
+  owner: 'jill64',
+  repo: 'rsac-synchronizer'
+}
+
 export default octoflare(async ({ app, installation, payload }) => {
   const event = onPush(payload) ?? onCreateRepo(payload)
 
@@ -22,10 +27,7 @@ export default octoflare(async ({ app, installation, payload }) => {
 
   const {
     data: { id: installation_id }
-  } = await app.octokit.rest.apps.getRepoInstallation({
-    owner: 'jill64',
-    repo: 'rsac-synchronizer'
-  })
+  } = await app.octokit.rest.apps.getRepoInstallation(originRepo)
 
   const { octokit, rsac_token } = await unfurl({
     octokit: app.getInstallationOctokit(installation_id),
@@ -40,8 +42,7 @@ export default octoflare(async ({ app, installation, payload }) => {
   })
 
   await octokit.rest.actions.createWorkflowDispatch({
-    owner: 'jill64',
-    repo: 'rsac-synchronizer',
+    ...originRepo,
     workflow_id: 'synchronize.yml',
     ref: 'main',
     inputs: {
