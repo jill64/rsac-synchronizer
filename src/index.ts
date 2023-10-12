@@ -1,8 +1,13 @@
+import { unfurl } from '@jill64/unfurl'
 import { octoflare } from 'octoflare'
+import { onCreateRepo } from './onCreateRepo.js'
+import { onPush } from './onPush.js'
 
 export default octoflare(async ({ app, installation, payload }) => {
-  if (!('commits' in payload)) {
-    return new Response('No Push Event', {
+  const event = onPush(payload) ?? onCreateRepo(payload)
+
+  if (!event) {
+    return new Response('No Trigger Event', {
       status: 200
     })
   }
@@ -13,30 +18,7 @@ export default octoflare(async ({ app, installation, payload }) => {
     })
   }
 
-  const { repository, commits } = payload
-
-  const owner = repository.owner.login
-  const repo = repository.name
-  const ref = payload.ref.replace('refs/heads/', '')
-
-  if (ref !== repository.default_branch) {
-    return new Response('Base is not default branch', {
-      status: 200
-    })
-  }
-
-  const isTriggered = commits.some(
-    (commit) =>
-      commit.modified.includes('rsac.yml') ||
-      commit.added.includes('rsac.yml') ||
-      commit.removed.includes('rsac.yml')
-  )
-
-  if (!isTriggered) {
-    return new Response('Not found valid commit', {
-      status: 200
-    })
-  }
+  const { owner, repo, ref } = event
 
   const {
     data: { id: installation_id }
@@ -45,16 +27,17 @@ export default octoflare(async ({ app, installation, payload }) => {
     repo: 'rsac-synchronizer'
   })
 
-  const octokit = await app.getInstallationOctokit(installation_id)
-
-  const rsac_token =
-    repo === '.github'
-      ? await app.octokit.rest.apps
-          .createInstallationAccessToken({
-            installation_id
-          })
-          .then(({ data }) => data.token)
-      : ''
+  const { octokit, rsac_token } = await unfurl({
+    octokit: app.getInstallationOctokit(installation_id),
+    rsac_token:
+      repo === '.github'
+        ? app.octokit.rest.apps
+            .createInstallationAccessToken({
+              installation_id
+            })
+            .then(({ data }) => data.token)
+        : ''
+  })
 
   await octokit.rest.actions.createWorkflowDispatch({
     owner: 'jill64',

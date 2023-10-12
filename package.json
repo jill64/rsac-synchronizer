@@ -22,5 +22,8 @@
     "typescanner": "0.5.3",
     "typescript": "5.2.2",
     "yaml": "2.3.2"
+  },
+  "dependencies": {
+    "@jill64/unfurl": "^1.0.9"
   }
 }
