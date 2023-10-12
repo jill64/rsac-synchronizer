@@ -22,11 +22,13 @@ jobs:
         uses: actions/checkout@8ade135a41bc03ea155e62e844d188df1ea18608 # v4
         with:
           repository: ${{ inputs.owner }}/.github
-
+          
       - name: Get Config
         if: ${{ !cancelled() }}
+        uses: gh640/command-result-action@v1
+        with:
+          command: cat rsac.yml
         id: root-config
-        run: echo yml=$(cat rsac.yml) >> $GITHUB_OUTPUT
 
       - name: Checkout
         if: ${{ !cancelled() }}
