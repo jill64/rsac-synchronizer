@@ -3,9 +3,10 @@ import github from '@actions/github'
 import { attempt } from '@jill64/attempt'
 import { readFile } from 'fs/promises'
 import merge from 'lodash/merge.js'
-import { array, scanner, string } from 'typescanner'
+import { array, scanner, string, isObject } from 'typescanner'
 import yaml from 'yaml'
 import { updateBranchProtection } from './updateBranchProtection.js'
+
 
 export const main = async () => {
   const token = core.getInput('token')
@@ -31,9 +32,7 @@ export const main = async () => {
   const config =
     rootConfig || repoConfig ? merge({}, rootConfig, repoConfig) : null
 
-  const isConfig = scanner({})
-
-  if (!isConfig(config)) {
+  if (!isObject(config)) {
     return
   }
 
@@ -77,7 +76,7 @@ export const main = async () => {
   }
 
   const existRepository = scanner({
-    repository: scanner({})
+    repository: isObject
   })
 
   if (existRepository(config)) {
@@ -89,7 +88,7 @@ export const main = async () => {
   }
 
   const existBranchProtection = scanner({
-    'branch-protection': scanner({})
+    'branch-protection': isObject
   })
 
   if (existBranchProtection(config)) {
@@ -111,5 +110,19 @@ export const main = async () => {
       repo,
       names: config.topics
     })
+  }
+
+  const existWfPermission = scanner({
+    'default-workflow-permissions': isObject
+  })
+
+  if (existWfPermission(config)) {
+    await octokit.rest.actions.setGithubActionsDefaultWorkflowPermissionsRepository(
+      {
+        owner,
+        repo,
+        ...config['default-workflow-permissions']
+      }
+    )
   }
 }
