@@ -25,7 +25,7 @@ jobs:
 
       - name: Get Config
         if: ${{ !cancelled() }}
-        uses: gh640/command-result-action@v1
+        uses: gh640/command-result-action@85ac60c7aae33f8f63e07a34907e4ca573e23bfd # v1
         with:
           command: cat rsac.yml
         id: root-config
