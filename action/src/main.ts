@@ -22,7 +22,7 @@ export const main = async () => {
   }, null)
 
   const config =
-    (rootConfig || repoConfig) ? merge({}, rootConfig, repoConfig) : null
+    rootConfig || repoConfig ? merge({}, rootConfig, repoConfig) : null
 
   if (!isObject(config)) {
     console.log('No configuration file found')
