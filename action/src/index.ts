@@ -68,6 +68,7 @@ action(async ({ octokit, core, github, owner, repo }) => {
 
     await Promise.all(result)
 
+
     return
   }
 
