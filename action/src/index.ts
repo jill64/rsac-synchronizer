@@ -6,21 +6,17 @@ import { array, isObject, scanner, string } from 'typescanner'
 import yaml from 'yaml'
 import { updateBranchProtection } from './updateBranchProtection.js'
 
-action(async ({ octokit, core, github }) => {
+action(async ({ octokit, core, github, owner, repo }) => {
   const token = core.getInput('token')
   const rootYml = core.getInput('root-config')
 
   const rootConfig = attempt(() => yaml.parse(rootYml) as unknown, null)
-
-  console.log('rootConfig', JSON.stringify(rootConfig, null, 2))
 
   const repoConfig = await attempt(async () => {
     const buff = await readFile('rsac.yml')
     const str = buff.toString()
     return yaml.parse(str) as unknown
   }, null)
-
-  console.log('repoConfig', JSON.stringify(repoConfig, null, 2))
 
   const config =
     rootConfig || repoConfig
@@ -31,15 +27,11 @@ action(async ({ octokit, core, github }) => {
         })
       : null
 
-  console.log('merged config', JSON.stringify(config, null, 2))
-
   if (!isObject(config)) {
     console.log('No configuration file found')
     return
   }
 
-  const owner = core.getInput('owner')
-  const repo = core.getInput('repo')
   const rsac_token = core.getInput('rsac_token')
 
   if (repo === '.github' && rsac_token) {
@@ -76,8 +68,6 @@ action(async ({ octokit, core, github }) => {
 
     await Promise.all(result)
 
-    console.log('Triggered all repositories')
-
     return
   }
 
@@ -98,7 +88,7 @@ action(async ({ octokit, core, github }) => {
   })
 
   if (existBranchProtection(config)) {
-    updateBranchProtection({
+    await updateBranchProtection({
       octokit,
       owner,
       repo,

@@ -33182,7 +33182,7 @@ function attempt(func, fallback) {
 var import_promises = require("fs/promises");
 var import_mergeWith = __toESM(require_mergeWith(), 1);
 
-// node_modules/.pnpm/octoflare@0.7.2/node_modules/octoflare/dist/action/action.js
+// node_modules/.pnpm/octoflare@0.7.3/node_modules/octoflare/dist/action/action.js
 var import_core = __toESM(require_core(), 1);
 var import_github = __toESM(require_github(), 1);
 var action = async (main) => {
@@ -33228,7 +33228,7 @@ var action = async (main) => {
   }
 };
 
-// node_modules/.pnpm/octoflare@0.7.2/node_modules/octoflare/dist/action/build.js
+// node_modules/.pnpm/octoflare@0.7.3/node_modules/octoflare/dist/action/build.js
 var import_esbuild = __toESM(require_main2(), 1);
 
 // action/src/index.ts
@@ -33282,29 +33282,24 @@ var updateBranchProtection = async ({
 };
 
 // action/src/index.ts
-action(async ({ octokit, core: core2, github: github2 }) => {
+action(async ({ octokit, core: core2, github: github2, owner, repo }) => {
   const token = core2.getInput("token");
   const rootYml = core2.getInput("root-config");
   const rootConfig = attempt(() => import_yaml.default.parse(rootYml), null);
-  console.log("rootConfig", JSON.stringify(rootConfig, null, 2));
   const repoConfig = await attempt(async () => {
     const buff = await (0, import_promises.readFile)("rsac.yml");
     const str = buff.toString();
     return import_yaml.default.parse(str);
   }, null);
-  console.log("repoConfig", JSON.stringify(repoConfig, null, 2));
   const config = rootConfig || repoConfig ? (0, import_mergeWith.default)({}, rootConfig, repoConfig, (a, b) => {
     if (Array.isArray(a) && Array.isArray(b)) {
       return [.../* @__PURE__ */ new Set([...a, ...b])];
     }
   }) : null;
-  console.log("merged config", JSON.stringify(config, null, 2));
   if (!(0, import_typescanner2.isObject)(config)) {
     console.log("No configuration file found");
     return;
   }
-  const owner = core2.getInput("owner");
-  const repo = core2.getInput("repo");
   const rsac_token = core2.getInput("rsac_token");
   if (repo === ".github" && rsac_token) {
     const { data: repository } = await octokit.rest.repos.get({
@@ -33332,7 +33327,6 @@ action(async ({ octokit, core: core2, github: github2 }) => {
       })
     );
     await Promise.all(result);
-    console.log("Triggered all repositories");
     return;
   }
   const existRepository = (0, import_typescanner2.scanner)({
@@ -33349,7 +33343,7 @@ action(async ({ octokit, core: core2, github: github2 }) => {
     "branch-protection": import_typescanner2.isObject
   });
   if (existBranchProtection(config)) {
-    updateBranchProtection({
+    await updateBranchProtection({
       octokit,
       owner,
       repo,
