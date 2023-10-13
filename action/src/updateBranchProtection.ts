@@ -1,4 +1,4 @@
-import github from '@actions/github'
+import { action } from 'octoflare/action'
 import { isBranchProtection } from './isBranchProtection.js'
 
 export const updateBranchProtection = async ({
@@ -8,7 +8,7 @@ export const updateBranchProtection = async ({
   repo
 }: {
   protections: Record<string, unknown>
-  octokit: ReturnType<typeof github.getOctokit>
+  octokit: Parameters<Parameters<typeof action>[0]>[0]['octokit']
   owner: string
   repo: string
 }) => {
