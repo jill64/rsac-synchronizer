@@ -18,7 +18,7 @@
     "@typescript-eslint/parser": "6.7.5",
     "esbuild": "0.19.4",
     "lodash": "4.17.21",
-    "octoflare": "0.5.3",
+    "octoflare": "0.7.2",
     "typescanner": "0.5.3",
     "typescript": "5.2.2",
     "yaml": "2.3.2"
