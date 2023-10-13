@@ -31,3 +31,4 @@ export const isBranchProtection = scanner({
     Null
   )
 })
+
