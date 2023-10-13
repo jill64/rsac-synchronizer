@@ -33182,7 +33182,7 @@ function attempt(func, fallback) {
 var import_promises = require("fs/promises");
 var import_mergeWith = __toESM(require_mergeWith(), 1);
 
-// node_modules/.pnpm/octoflare@0.7.3/node_modules/octoflare/dist/action/action.js
+// node_modules/.pnpm/octoflare@0.7.4/node_modules/octoflare/dist/action/action.js
 var import_core = __toESM(require_core(), 1);
 var import_github = __toESM(require_github(), 1);
 var action = async (main) => {
@@ -33194,7 +33194,7 @@ var action = async (main) => {
   const details_url = `${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`;
   const owner = import_core.default.getInput("owner", { required: true });
   const repo = import_core.default.getInput("repo", { required: true });
-  const finish = async (conclusion, params) => {
+  const finish = async (conclusion, params, revokeToken) => {
     if (check_run_id) {
       await octokit.rest.checks.update({
         owner,
@@ -33206,7 +33206,9 @@ var action = async (main) => {
         ...params
       });
     }
-    await octokit.rest.apps.revokeInstallationAccessToken();
+    if (revokeToken) {
+      await octokit.rest.apps.revokeInstallationAccessToken();
+    }
   };
   try {
     await main({
@@ -33228,7 +33230,7 @@ var action = async (main) => {
   }
 };
 
-// node_modules/.pnpm/octoflare@0.7.3/node_modules/octoflare/dist/action/build.js
+// node_modules/.pnpm/octoflare@0.7.4/node_modules/octoflare/dist/action/build.js
 var import_esbuild = __toESM(require_main2(), 1);
 
 // action/src/index.ts
