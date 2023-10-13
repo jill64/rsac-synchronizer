@@ -9,21 +9,16 @@
     "format": "npx prettier --write ."
   },
   "devDependencies": {
-    "@actions/core": "1.10.1",
-    "@actions/github": "6.0.0",
     "@jill64/attempt": "1.0.12",
     "@types/lodash": "4.14.199",
     "@types/node": "20.8.5",
     "@typescript-eslint/eslint-plugin": "6.7.5",
     "@typescript-eslint/parser": "6.7.5",
-    "esbuild": "0.19.4",
     "lodash": "4.17.21",
-    "octoflare": "0.5.3",
+    "octoflare": "0.7.1",
     "typescanner": "0.5.3",
     "typescript": "5.2.2",
-    "yaml": "2.3.2"
-  },
-  "dependencies": {
+    "yaml": "2.3.2",
     "@jill64/unfurl": "^1.0.9"
   }
 }

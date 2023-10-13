@@ -1,9 +1,3 @@
-import { build } from 'esbuild'
+import { build } from 'octoflare/action'
 
-await build({
-  entryPoints: ['action/src/index.ts'],
-  bundle: true,
-  platform: 'node',
-  target: 'node16',
-  outfile: 'action/dist/index.cjs'
-})
+await build('action/src/index.ts', 'action/dist/index.cjs')
