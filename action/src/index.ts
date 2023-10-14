@@ -1,21 +1,19 @@
+import exec from '@actions/exec'
 import { attempt } from '@jill64/attempt'
-import { readFile } from 'fs/promises'
 import mergeWith from 'lodash/mergeWith.js'
 import { action } from 'octoflare/action'
 import { array, isObject, scanner, string } from 'typescanner'
 import yaml from 'yaml'
 import { updateBranchProtection } from './updateBranchProtection.js'
 
-action(async ({ octokit, core, github, owner, repo }) => {
-  const token = core.getInput('token')
+action(async ({ octokit, core, github, payload }) => {
   const rootYml = core.getInput('root-config')
 
   const rootConfig = attempt(() => yaml.parse(rootYml) as unknown, null)
 
   const repoConfig = await attempt(async () => {
-    const buff = await readFile('rsac.yml')
-    const str = buff.toString()
-    return yaml.parse(str) as unknown
+    const { stdout } = await exec.getExecOutput('cat rsac.yml')
+    return yaml.parse(stdout) as unknown
   }, null)
 
   const config =
@@ -33,6 +31,7 @@ action(async ({ octokit, core, github, owner, repo }) => {
   }
 
   const rsac_token = core.getInput('rsac_token')
+  const { repo, owner } = payload
 
   if (repo === '.github' && rsac_token) {
     const { data: repository } = await octokit.rest.repos.get({
@@ -58,9 +57,7 @@ action(async ({ octokit, core, github, owner, repo }) => {
         workflow_id: 'synchronize.yml',
         ref: 'main',
         inputs: {
-          token,
-          owner: repo.owner.login,
-          repo: repo.name,
+          payload: JSON.stringify(payload),
           ref: repo.default_branch
         }
       })
