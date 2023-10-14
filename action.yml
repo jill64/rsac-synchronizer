@@ -2,14 +2,8 @@ name: Synchronize
 description: GitHub Action for RSAC Synchronizer
 
 inputs:
-  token:
-    description: GitHub App Token
-    required: true
-  owner:
-    description: Repository owner
-    required: true
-  repo:
-    description: Repository name
+  payload:
+    description: Octoflare Payload
     required: true
   root-config:
     description: Root configuration file

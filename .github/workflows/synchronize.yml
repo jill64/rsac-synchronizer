@@ -3,16 +3,16 @@ name: Synchronize
 on:
   workflow_dispatch:
     inputs:
-      token:
-        required: true
-      owner:
-        required: true
-      repo:
+      payload:
         required: true
       ref:
         required: true
       rsac_token:
         required: false
+
+env:
+  owner: ${{ fromJson(inputs.payload).owner }}
+  repo: ${{ fromJson(inputs.payload).repo }}
 
 jobs:
   synchronize:
@@ -21,7 +21,7 @@ jobs:
       - name: Root Checkout
         uses: actions/checkout@8ade135a41bc03ea155e62e844d188df1ea18608 # v4
         with:
-          repository: ${{ inputs.owner }}/.github
+          repository: ${{ env.owner }}/.github
 
       - name: Get Config
         if: ${{ !cancelled() }}
@@ -34,15 +34,13 @@ jobs:
         if: ${{ !cancelled() }}
         uses: actions/checkout@8ade135a41bc03ea155e62e844d188df1ea18608 # v4
         with:
-          repository: ${{ inputs.owner }}/${{ inputs.repo }}
+          repository: ${{ env.owner }}/${{ env.repo }}
           ref: ${{ inputs.ref }}
 
       - name: Synchronize
         if: ${{ !cancelled() }}
         uses: jill64/rsac-synchronizer@main
         with:
-          token: ${{ inputs.token }}
-          repo: ${{ inputs.repo }}
-          owner: ${{ inputs.owner }}
+          payload: ${{ inputs.payload }}
           root-config: ${{ steps.root-config.outputs.stdout }}
           rsac_token: ${{ inputs.rsac_token }}

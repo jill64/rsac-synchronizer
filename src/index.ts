@@ -1,12 +1,6 @@
-import { unfurl } from '@jill64/unfurl'
 import { octoflare } from 'octoflare'
 import { onCreateRepo } from './onCreateRepo.js'
 import { onPush } from './onPush.js'
-
-const originRepo = {
-  owner: 'jill64',
-  repo: 'rsac-synchronizer'
-}
 
 export default octoflare(async ({ app, installation, payload }) => {
   const event = onPush(payload) ?? onCreateRepo(payload)
@@ -25,36 +19,31 @@ export default octoflare(async ({ app, installation, payload }) => {
 
   const { owner, repo, ref } = event
 
-  const {
-    data: { id: installation_id }
-  } = await app.octokit.rest.apps.getRepoInstallation(originRepo)
+  const rsac_token =
+    repo === '.github'
+      ? await app.octokit.rest.apps
+          .createInstallationAccessToken({
+            installation_id: installation.id
+          })
+          .then(({ data }) => data.token)
+      : ''
 
-  const { octokit, rsac_token } = await unfurl({
-    octokit: app.getInstallationOctokit(installation_id),
-    rsac_token:
-      repo === '.github'
-        ? app.octokit.rest.apps
-            .createInstallationAccessToken({
-              installation_id
-            })
-            .then(({ data }) => data.token)
-        : ''
-  })
-
-  await octokit.rest.actions.createWorkflowDispatch({
-    ...originRepo,
+  await installation.startWorkflow({
+    owner: 'jill64',
+    repo: 'rsac-synchronizer',
     workflow_id: 'synchronize.yml',
     ref: 'main',
     inputs: {
-      token: installation.token,
+      payload: {
+        owner,
+        repo
+      },
       rsac_token,
-      owner,
-      repo,
       ref
     }
   })
 
-  return new Response(null, {
+  return new Response('RSaC Synchronize Dispatched', {
     status: 202
   })
 })
