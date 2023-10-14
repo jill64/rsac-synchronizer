@@ -2,7 +2,7 @@
   "type": "module",
   "scripts": {
     "dev": "npx wrangler dev",
-    "build": "npx wrangler deploy --dry-run",
+    "build": "npx wrangler deploy --dry-run && npm run build:action",
     "build:action": "npx tsx action/scripts/build.ts",
     "deploy": "npx wrangler deploy",
     "lint": "npx prettier --check . && npx eslint && tsc",
