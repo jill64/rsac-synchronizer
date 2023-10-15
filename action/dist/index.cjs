@@ -31951,15 +31951,18 @@ var updateBranchProtection = async ({
 action(async ({ octokit, payload }) => {
   const rootYml = core_exports.getInput("root-config");
   const rootConfig = attempt(() => import_yaml.default.parse(rootYml), null);
+  console.log("root config", rootConfig);
   const repoConfig = await attempt(async () => {
     const { stdout } = await import_exec.default.getExecOutput("cat rsac.yml");
     return import_yaml.default.parse(stdout);
   }, null);
+  console.log("repo config", repoConfig);
   const config = rootConfig || repoConfig ? (0, import_mergeWith.default)({}, rootConfig, repoConfig, (a, b) => {
     if (Array.isArray(a) && Array.isArray(b)) {
       return [.../* @__PURE__ */ new Set([...a, ...b])];
     }
   }) : null;
+  console.log("merged config", config);
   if (!(0, import_typescanner2.isObject)(config)) {
     console.log("No configuration file found");
     return;
