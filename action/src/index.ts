@@ -12,11 +12,15 @@ action(async ({ octokit, payload }) => {
   const rootYml = core.getInput('root-config')
 
   const rootConfig = attempt(() => yaml.parse(rootYml) as unknown, null)
+  
+  console.log('root config', rootConfig)
 
   const repoConfig = await attempt(async () => {
     const { stdout } = await exec.getExecOutput('cat rsac.yml')
     return yaml.parse(stdout) as unknown
   }, null)
+  
+  console.log('repo config', repoConfig)
 
   const config =
     rootConfig || repoConfig
@@ -26,6 +30,8 @@ action(async ({ octokit, payload }) => {
           }
         })
       : null
+
+  console.log('merged config', config)
 
   if (!isObject(config)) {
     console.log('No configuration file found')
