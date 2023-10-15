@@ -19,5 +19,8 @@
     "typescanner": "0.5.3",
     "typescript": "5.2.2",
     "yaml": "2.3.3"
+  },
+  "dependencies": {
+    "esbuild": "^0.19.4"
   }
 }

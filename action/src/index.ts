@@ -2,11 +2,13 @@ import exec from '@actions/exec'
 import { attempt } from '@jill64/attempt'
 import mergeWith from 'lodash/mergeWith.js'
 import { action } from 'octoflare/action'
+import * as core from 'octoflare/action/core'
+import * as github from 'octoflare/action/github'
 import { array, isObject, scanner, string } from 'typescanner'
 import yaml from 'yaml'
 import { updateBranchProtection } from './updateBranchProtection.js'
 
-action(async ({ octokit, core, github, payload }) => {
+action(async ({ octokit, payload }) => {
   const rootYml = core.getInput('root-config')
 
   const rootConfig = attempt(() => yaml.parse(rootYml) as unknown, null)
