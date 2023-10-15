@@ -31847,7 +31847,7 @@ function attempt(func, fallback) {
 // action/src/index.ts
 var import_mergeWith = __toESM(require_mergeWith(), 1);
 
-// node_modules/.pnpm/octoflare@0.11.0/node_modules/octoflare/dist/action/action.js
+// node_modules/.pnpm/octoflare@0.11.1/node_modules/octoflare/dist/action/action.js
 var import_core = __toESM(require_core(), 1);
 var import_github = __toESM(require_github(), 1);
 var action = async (handler) => {
@@ -31889,11 +31889,11 @@ var action = async (handler) => {
   }
 };
 
-// node_modules/.pnpm/octoflare@0.11.0/node_modules/octoflare/dist/action/core/index.js
+// node_modules/.pnpm/octoflare@0.11.1/node_modules/octoflare/dist/action/core/index.js
 var core_exports = {};
 __reExport(core_exports, __toESM(require_core(), 1));
 
-// node_modules/.pnpm/octoflare@0.11.0/node_modules/octoflare/dist/action/github/index.js
+// node_modules/.pnpm/octoflare@0.11.1/node_modules/octoflare/dist/action/github/index.js
 var github_exports = {};
 __reExport(github_exports, __toESM(require_github(), 1));
 
@@ -31951,18 +31951,18 @@ var updateBranchProtection = async ({
 action(async ({ octokit, payload }) => {
   const rootYml = core_exports.getInput("root-config");
   const rootConfig = attempt(() => import_yaml.default.parse(rootYml), null);
-  console.log("root config", rootConfig);
+  console.log("root config", JSON.stringify(rootConfig, null, 2));
   const repoConfig = await attempt(async () => {
     const { stdout } = await import_exec.default.getExecOutput("cat rsac.yml");
     return import_yaml.default.parse(stdout);
   }, null);
-  console.log("repo config", repoConfig);
+  console.log("repo config", JSON.stringify(repoConfig, null, 2));
   const config = rootConfig || repoConfig ? (0, import_mergeWith.default)({}, rootConfig, repoConfig, (a, b) => {
     if (Array.isArray(a) && Array.isArray(b)) {
       return [.../* @__PURE__ */ new Set([...a, ...b])];
     }
   }) : null;
-  console.log("merged config", config);
+  console.log("merged config", JSON.stringify(config, null, 2));
   if (!(0, import_typescanner2.isObject)(config)) {
     console.log("No configuration file found");
     return;
