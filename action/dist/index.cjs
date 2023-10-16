@@ -31987,7 +31987,11 @@ action(async ({ octokit, payload }) => {
         workflow_id: "synchronize.yml",
         ref: "main",
         inputs: {
-          payload: JSON.stringify(payload),
+          payload: JSON.stringify({
+            ...payload,
+            repo: repo2.name,
+            owner: repo2.owner.login
+          }),
           ref: repo2.default_branch
         }
       })

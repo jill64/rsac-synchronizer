@@ -65,7 +65,11 @@ action(async ({ octokit, payload }) => {
         workflow_id: 'synchronize.yml',
         ref: 'main',
         inputs: {
-          payload: JSON.stringify(payload),
+          payload: JSON.stringify({
+            ...payload,
+            repo: repo.name,
+            owner: repo.owner.login
+          }),
           ref: repo.default_branch
         }
       })
