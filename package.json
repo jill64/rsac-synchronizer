@@ -10,7 +10,6 @@
   "devDependencies": {
     "@actions/exec": "1.1.1",
     "@jill64/attempt": "1.0.12",
-    "@jill64/unfurl": "1.0.11",
     "@types/lodash": "4.14.199",
     "@typescript-eslint/eslint-plugin": "6.7.5",
     "@typescript-eslint/parser": "6.7.5",
@@ -18,9 +17,7 @@
     "octoflare": "0.11.3",
     "typescanner": "0.5.3",
     "typescript": "5.2.2",
-    "yaml": "2.3.3"
-  },
-  "dependencies": {
+    "yaml": "2.3.3",
     "esbuild": "^0.19.4"
   }
 }
