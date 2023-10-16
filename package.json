@@ -9,7 +9,7 @@
   },
   "devDependencies": {
     "@actions/exec": "1.1.1",
-    "@jill64/attempt": "1.0.12",
+    "@jill64/attempt": "1.0.13",
     "@types/lodash": "4.14.199",
     "@typescript-eslint/eslint-plugin": "6.7.5",
     "@typescript-eslint/parser": "6.7.5",
