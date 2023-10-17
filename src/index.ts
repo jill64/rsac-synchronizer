@@ -29,18 +29,12 @@ export default octoflare(async ({ app, installation, payload }) => {
       : ''
 
   await installation.startWorkflow({
-    owner: 'jill64',
-    repo: 'rsac-synchronizer',
-    workflow_id: 'synchronize.yml',
-    ref: 'main',
-    inputs: {
-      payload: {
-        owner,
-        repo
-      },
-      rsac_token,
-      ref
-    }
+    payload: {
+      owner,
+      repo
+    },
+    rsac_token,
+    ref
   })
 
   return new Response('RSaC Synchronize Workflow Dispatched', {
