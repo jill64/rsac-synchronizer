@@ -8,7 +8,7 @@ GitHub Repository Settings as Code
 
 > Powered by [Octoflare](https://github.com/jill64/octoflare#readme)
 
-[GitHub App](https://github.com/apps/ghost-lint)
+[GitHub App](https://github.com/apps/rsac-synchronizer)
 
 ## Config file resolution
 
