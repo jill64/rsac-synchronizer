@@ -31847,9 +31847,58 @@ function attempt(func, fallback) {
 // action/src/index.ts
 var import_mergeWith = __toESM(require_mergeWith(), 1);
 
-// node_modules/.pnpm/octoflare@0.11.4/node_modules/octoflare/dist/action/action.js
+// node_modules/.pnpm/octoflare@0.12.0/node_modules/octoflare/dist/action/action.js
 var import_core = __toESM(require_core(), 1);
 var import_github = __toESM(require_github(), 1);
+
+// node_modules/.pnpm/octoflare@0.12.0/node_modules/octoflare/dist/utils/errorLogging.js
+var errorLogging = async ({ octokit, repo, owner, error, info }) => {
+  try {
+    const limitedErrorMessage = error.message.length > 30 ? `${error.message.substring(0, 30)}...` : error.message;
+    const errorTitle = `Octoflare Error: ${limitedErrorMessage}`;
+    const { data: list } = await octokit.rest.issues.list({
+      owner,
+      repo,
+      per_page: 100,
+      state: "all",
+      labels: "octoflare-error"
+    });
+    const exists = list.find(({ title }) => title === errorTitle);
+    if (exists) {
+      await octokit.rest.issues.createComment({
+        owner,
+        repo,
+        issue_number: exists.number,
+        body: info ?? "+1"
+      });
+      return;
+    }
+    await octokit.rest.issues.create({
+      owner,
+      repo,
+      title: errorTitle,
+      body: `# ${error.name}  
+## Message  
+\`\`\`
+${error.message}
+\`\`\`
+
+## Info  
+${info ?? "No info provided"}
+
+## Stack Trace  
+\`\`\`
+${error.stack ?? "No stack trace"}
+\`\`\`
+`,
+      labels: ["octoflare-error"]
+    });
+  } catch (e) {
+    console.error(e);
+  }
+};
+
+// node_modules/.pnpm/octoflare@0.12.0/node_modules/octoflare/dist/action/action.js
 var action = async (handler) => {
   const payloadStr = import_core.default.getInput("payload", { required: true });
   const payload = JSON.parse(payloadStr);
@@ -31881,6 +31930,14 @@ var action = async (handler) => {
     }
     await close("success");
   } catch (e) {
+    if (e instanceof Error) {
+      await errorLogging({
+        octokit,
+        ...context.repo,
+        error: e,
+        info: `${owner}/${repo}`
+      });
+    }
     await close("failure", {
       title: "Octoflare Action Error",
       summary: e instanceof Error ? e.message : "Unknown error"
@@ -31889,11 +31946,11 @@ var action = async (handler) => {
   }
 };
 
-// node_modules/.pnpm/octoflare@0.11.4/node_modules/octoflare/dist/re-exports/actions/core.js
+// node_modules/.pnpm/octoflare@0.12.0/node_modules/octoflare/dist/re-exports/actions/core.js
 var core_exports = {};
 __reExport(core_exports, __toESM(require_core(), 1));
 
-// node_modules/.pnpm/octoflare@0.11.4/node_modules/octoflare/dist/re-exports/actions/github.js
+// node_modules/.pnpm/octoflare@0.12.0/node_modules/octoflare/dist/re-exports/actions/github.js
 var github_exports = {};
 __reExport(github_exports, __toESM(require_github(), 1));
 
