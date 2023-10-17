@@ -2,3 +2,9 @@ name = "rsac-synchronizer"
 main = "src/index.ts"
 compatibility_date = "2023-10-02"
 compatibility_flags = ["nodejs_compat"]
+
+[vars]
+
+OCTOFLARE_APP_ID = "406400"
+OCTOFLARE_APP_OWNER = "jill64"
+OCTOFLARE_APP_REPO = "rsac-synchronizer"
