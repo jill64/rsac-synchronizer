@@ -32041,7 +32041,7 @@ action(async ({ octokit, payload }) => {
       (repo2) => rsac_kit.rest.actions.createWorkflowDispatch({
         owner: "jill64",
         repo: "rsac-synchronizer",
-        workflow_id: "synchronize.yml",
+        workflow_id: "rsac-synchronizer.yml",
         ref: "main",
         inputs: {
           payload: JSON.stringify({
