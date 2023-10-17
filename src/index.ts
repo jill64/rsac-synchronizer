@@ -43,7 +43,7 @@ export default octoflare(async ({ app, installation, payload }) => {
     }
   })
 
-  return new Response('RSaC Synchronize Dispatched', {
+  return new Response('RSaC Synchronize Workflow Dispatched', {
     status: 202
   })
 })
