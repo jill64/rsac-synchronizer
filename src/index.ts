@@ -2,7 +2,7 @@ import { octoflare } from 'octoflare'
 import { onCreateRepo } from './onCreateRepo.js'
 import { onPush } from './onPush.js'
 
-export default octoflare(async ({ app, installation, payload }) => {
+export default octoflare(async ({ app, installation, payload, env }) => {
   const event = onPush(payload) ?? onCreateRepo(payload)
 
   if (!event) {
@@ -22,10 +22,16 @@ export default octoflare(async ({ app, installation, payload }) => {
   const rsac_token =
     repo === '.github'
       ? await app.octokit.rest.apps
-          .createInstallationAccessToken({
-            installation_id: installation.id
+          .getRepoInstallation({
+            owner: env.OCTOFLARE_APP_OWNER,
+            repo: env.OCTOFLARE_APP_REPO
           })
-          .then(({ data }) => data.token)
+          .then(({ data: { id } }) =>
+            app.octokit.rest.apps.createInstallationAccessToken({
+              installation_id: id
+            })
+          )
+          .then(({ data: { token } }) => token)
       : ''
 
   await installation.startWorkflow({
