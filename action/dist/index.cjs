@@ -31825,15 +31825,11 @@ var require_dist2 = __commonJS({
 // action/src/index.ts
 var import_exec = __toESM(require_exec(), 1);
 
-// node_modules/.pnpm/is-promise@4.0.0/node_modules/is-promise/index.mjs
-function isPromise(obj) {
-  return !!obj && (typeof obj === "object" || typeof obj === "function") && typeof obj.then === "function";
-}
-
-// node_modules/.pnpm/@jill64+attempt@1.0.13/node_modules/@jill64/attempt/dist/index.js
+// node_modules/.pnpm/@jill64+attempt@1.1.0/node_modules/@jill64/attempt/dist/index.js
+var isPromise = (obj) => !!obj && (typeof obj === "object" || typeof obj === "function") && "then" in obj && typeof obj.then === "function";
 function attempt(func, fallback) {
-  var argLen = arguments.length;
-  var handle = function(error) {
+  const argLen = arguments.length;
+  const handle = (error) => {
     if (argLen === 1) {
       if (error instanceof Error) {
         return error;
@@ -31843,10 +31839,8 @@ function attempt(func, fallback) {
     return typeof fallback === "function" ? fallback(error instanceof Error ? error : null, error) : fallback;
   };
   try {
-    var result = func();
-    return isPromise(result) ? result.then(function(_) {
-      return _;
-    }, handle) : result;
+    const result = func();
+    return isPromise(result) ? result.then((_) => _, handle) : result;
   } catch (error) {
     return handle(error);
   }
