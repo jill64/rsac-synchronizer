@@ -31849,11 +31849,11 @@ function attempt(func, fallback) {
 // action/src/index.ts
 var import_mergeWith = __toESM(require_mergeWith(), 1);
 
-// node_modules/.pnpm/octoflare@0.13.1/node_modules/octoflare/dist/action/action.js
+// node_modules/.pnpm/octoflare@0.14.2/node_modules/octoflare/dist/action/action.js
 var import_core = __toESM(require_core(), 1);
 var import_github = __toESM(require_github(), 1);
 
-// node_modules/.pnpm/octoflare@0.13.1/node_modules/octoflare/dist/utils/errorLogging.js
+// node_modules/.pnpm/octoflare@0.14.2/node_modules/octoflare/dist/utils/errorLogging.js
 var errorLogging = async ({ octokit, repo, owner, error, info }) => {
   try {
     const limitedErrorMessage = error.message.length > 30 ? `${error.message.substring(0, 30)}...` : error.message;
@@ -31900,12 +31900,13 @@ ${error.stack ?? "No stack trace"}
   }
 };
 
-// node_modules/.pnpm/octoflare@0.13.1/node_modules/octoflare/dist/action/action.js
+// node_modules/.pnpm/octoflare@0.14.2/node_modules/octoflare/dist/action/action.js
 var action = async (handler) => {
   const payloadStr = import_core.default.getInput("payload", { required: true });
   const payload = JSON.parse(payloadStr);
-  const { token, check_run_id, owner, repo } = payload;
+  const { token, app_token, check_run_id, owner, repo } = payload;
   const octokit = import_github.default.getOctokit(token);
+  const app_kit = import_github.default.getOctokit(app_token);
   const { context } = import_github.default;
   const details_url = `${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`;
   const close = async (conclusion, output) => {
@@ -31919,7 +31920,10 @@ var action = async (handler) => {
         conclusion,
         output
       });
-      await octokit.rest.apps.revokeInstallationAccessToken();
+      await Promise.all([
+        octokit.rest.apps.revokeInstallationAccessToken(),
+        app_kit.rest.apps.revokeInstallationAccessToken()
+      ]);
     }
   };
   try {
@@ -31934,7 +31938,7 @@ var action = async (handler) => {
   } catch (e) {
     if (e instanceof Error) {
       await errorLogging({
-        octokit,
+        octokit: app_kit,
         ...context.repo,
         error: e,
         info: `${owner}/${repo}`
@@ -31948,11 +31952,11 @@ var action = async (handler) => {
   }
 };
 
-// node_modules/.pnpm/octoflare@0.13.1/node_modules/octoflare/dist/re-exports/actions/core.js
+// node_modules/.pnpm/octoflare@0.14.2/node_modules/octoflare/dist/re-exports/actions/core.js
 var core_exports = {};
 __reExport(core_exports, __toESM(require_core(), 1));
 
-// node_modules/.pnpm/octoflare@0.13.1/node_modules/octoflare/dist/re-exports/actions/github.js
+// node_modules/.pnpm/octoflare@0.14.2/node_modules/octoflare/dist/re-exports/actions/github.js
 var github_exports = {};
 __reExport(github_exports, __toESM(require_github(), 1));
 
