@@ -14,7 +14,7 @@
     "@typescript-eslint/eslint-plugin": "6.8.0",
     "@typescript-eslint/parser": "6.8.0",
     "lodash": "4.17.21",
-    "octoflare": "0.14.2",
+    "octoflare": "0.14.5",
     "typescanner": "0.5.3",
     "typescript": "5.2.2",
     "yaml": "2.3.3",

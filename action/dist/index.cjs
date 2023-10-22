@@ -31849,20 +31849,20 @@ function attempt(func, fallback) {
 // action/src/index.ts
 var import_mergeWith = __toESM(require_mergeWith(), 1);
 
-// node_modules/.pnpm/octoflare@0.14.2/node_modules/octoflare/dist/action/action.js
+// node_modules/.pnpm/octoflare@0.14.5/node_modules/octoflare/dist/action/action.js
 var import_core = __toESM(require_core(), 1);
 var import_github = __toESM(require_github(), 1);
 
-// node_modules/.pnpm/octoflare@0.14.2/node_modules/octoflare/dist/utils/errorLogging.js
+// node_modules/.pnpm/octoflare@0.14.5/node_modules/octoflare/dist/utils/errorLogging.js
 var errorLogging = async ({ octokit, repo, owner, error, info }) => {
   try {
-    const limitedErrorMessage = error.message.length > 30 ? `${error.message.substring(0, 30)}...` : error.message;
+    const limitedErrorMessage = error.message.length > 50 ? `${error.message.substring(0, 50)}...` : error.message;
     const errorTitle = `Octoflare Error: ${limitedErrorMessage}`;
-    const { data: list } = await octokit.rest.issues.list({
+    const { data: list } = await octokit.rest.issues.listForRepo({
       owner,
       repo,
       per_page: 100,
-      state: "all",
+      state: "open",
       labels: "octoflare-error"
     });
     const exists = list.find(({ title }) => title === errorTitle);
@@ -31879,7 +31879,7 @@ var errorLogging = async ({ octokit, repo, owner, error, info }) => {
       owner,
       repo,
       title: errorTitle,
-      body: `# ${error.name}  
+      body: `# ${error.name}
 ## Message  
 \`\`\`
 ${error.message}
@@ -31900,7 +31900,7 @@ ${error.stack ?? "No stack trace"}
   }
 };
 
-// node_modules/.pnpm/octoflare@0.14.2/node_modules/octoflare/dist/action/action.js
+// node_modules/.pnpm/octoflare@0.14.5/node_modules/octoflare/dist/action/action.js
 var action = async (handler) => {
   const payloadStr = import_core.default.getInput("payload", { required: true });
   const payload = JSON.parse(payloadStr);
@@ -31941,7 +31941,11 @@ var action = async (handler) => {
         octokit: app_kit,
         ...context.repo,
         error: e,
-        info: `${owner}/${repo}`
+        info: `
+Target Repo: [${owner}/${repo}](https://github.com/${owner}/${repo})  
+Cause on Action  
+[Workflow Detail](${details_url})
+`
       });
     }
     await close("failure", {
@@ -31952,11 +31956,11 @@ var action = async (handler) => {
   }
 };
 
-// node_modules/.pnpm/octoflare@0.14.2/node_modules/octoflare/dist/re-exports/actions/core.js
+// node_modules/.pnpm/octoflare@0.14.5/node_modules/octoflare/dist/re-exports/actions/core.js
 var core_exports = {};
 __reExport(core_exports, __toESM(require_core(), 1));
 
-// node_modules/.pnpm/octoflare@0.14.2/node_modules/octoflare/dist/re-exports/actions/github.js
+// node_modules/.pnpm/octoflare@0.14.5/node_modules/octoflare/dist/re-exports/actions/github.js
 var github_exports = {};
 __reExport(github_exports, __toESM(require_github(), 1));
 
