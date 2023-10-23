@@ -11410,7 +11410,7 @@ var require_readable = __commonJS({
         return this[kBody];
       }
       async dump(opts) {
-        let limit = opts && Number.isFinite(opts.limit) ? opts.limit : 262144;
+        let limit2 = opts && Number.isFinite(opts.limit) ? opts.limit : 262144;
         const signal = opts && opts.signal;
         const abortFn = () => {
           this.destroy();
@@ -11426,8 +11426,8 @@ var require_readable = __commonJS({
         try {
           for await (const chunk of this) {
             util.throwIfAborted(signal);
-            limit -= Buffer.byteLength(chunk);
-            if (limit < 0) {
+            limit2 -= Buffer.byteLength(chunk);
+            if (limit2 < 0) {
               return;
             }
           }
@@ -11551,11 +11551,11 @@ var require_util3 = __commonJS({
     async function getResolveErrorBodyCallback({ callback, body, contentType, statusCode, statusMessage, headers }) {
       assert(body);
       let chunks = [];
-      let limit = 0;
+      let limit2 = 0;
       for await (const chunk of body) {
         chunks.push(chunk);
-        limit += chunk.length;
-        if (limit > 128 * 1024) {
+        limit2 += chunk.length;
+        if (limit2 > 128 * 1024) {
           chunks = null;
           break;
         }
@@ -25771,16 +25771,16 @@ var require_stringifyString = __commonJS({
     function lineLengthOverLimit(str, lineWidth, indentLength) {
       if (!lineWidth || lineWidth < 0)
         return false;
-      const limit = lineWidth - indentLength;
+      const limit2 = lineWidth - indentLength;
       const strLen = str.length;
-      if (strLen <= limit)
+      if (strLen <= limit2)
         return false;
       for (let i = 0, start = 0; i < strLen; ++i) {
         if (str[i] === "\n") {
-          if (i - start > limit)
+          if (i - start > limit2)
             return true;
           start = i + 1;
-          if (strLen - start <= limit)
+          if (strLen - start <= limit2)
             return false;
         }
       }
@@ -31849,15 +31849,15 @@ function attempt(func, fallback) {
 // action/src/index.ts
 var import_mergeWith = __toESM(require_mergeWith(), 1);
 
-// node_modules/.pnpm/octoflare@0.14.6/node_modules/octoflare/dist/action/action.js
+// node_modules/.pnpm/octoflare@0.14.7/node_modules/octoflare/dist/action/action.js
 var import_core = __toESM(require_core(), 1);
 var import_github = __toESM(require_github(), 1);
 
-// node_modules/.pnpm/octoflare@0.14.6/node_modules/octoflare/dist/utils/errorLogging.js
+// node_modules/.pnpm/octoflare@0.14.7/node_modules/octoflare/dist/utils/errorLogging.js
+var limit = (str, num) => str.length > num ? `${str.substring(0, num)}...` : str;
 var errorLogging = async ({ octokit, repo, owner, error, info }) => {
   try {
-    const limitedErrorMessage = error.message.length > 50 ? `${error.message.substring(0, 50)}...` : error.message;
-    const errorTitle = `Octoflare Error: ${limitedErrorMessage}`;
+    const errorTitle = `Octoflare Error: ${limit(error.message, 64)}`;
     const { data: list } = await octokit.rest.issues.listForRepo({
       owner,
       repo,
@@ -31879,7 +31879,7 @@ var errorLogging = async ({ octokit, repo, owner, error, info }) => {
       owner,
       repo,
       title: errorTitle,
-      body: `# ${error.name}
+      body: limit(`# ${error.name}
 ## Message  
 \`\`\`
 ${error.message}
@@ -31892,7 +31892,7 @@ ${info ?? "No info provided"}
 \`\`\`
 ${error.stack ?? "No stack trace"}
 \`\`\`
-`,
+`, 1e4),
       labels: ["octoflare-error"]
     });
   } catch (e) {
@@ -31900,7 +31900,7 @@ ${error.stack ?? "No stack trace"}
   }
 };
 
-// node_modules/.pnpm/octoflare@0.14.6/node_modules/octoflare/dist/action/action.js
+// node_modules/.pnpm/octoflare@0.14.7/node_modules/octoflare/dist/action/action.js
 var action = async (handler) => {
   const payloadStr = import_core.default.getInput("payload", { required: true });
   const payload = JSON.parse(payloadStr);
@@ -31956,11 +31956,11 @@ Cause on Action
   }
 };
 
-// node_modules/.pnpm/octoflare@0.14.6/node_modules/octoflare/dist/re-exports/actions/core.js
+// node_modules/.pnpm/octoflare@0.14.7/node_modules/octoflare/dist/re-exports/actions/core.js
 var core_exports = {};
 __reExport(core_exports, __toESM(require_core(), 1));
 
-// node_modules/.pnpm/octoflare@0.14.6/node_modules/octoflare/dist/re-exports/actions/github.js
+// node_modules/.pnpm/octoflare@0.14.7/node_modules/octoflare/dist/re-exports/actions/github.js
 var github_exports = {};
 __reExport(github_exports, __toESM(require_github(), 1));
 
