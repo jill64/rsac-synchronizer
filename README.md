@@ -1,14 +1,8 @@
-<div align="center">
-<img src="./assets/logo.png" width="100px" />
-</div>
+<!----- BEGIN GHOST DOCS LOGO src="./assets/logo.png" ----->
+<!----- END GHOST DOCS LOGO ----->
 
-# RSaC Synchronizer
-
-GitHub Repository Settings as Code
-
-> Powered by [Octoflare](https://github.com/jill64/octoflare#readme)
-
-[GitHub App](https://github.com/apps/rsac-synchronizer)
+<!----- BEGIN GHOST DOCS HEADER ----->
+<!----- END GHOST DOCS HEADER ----->
 
 ## Config file resolution
 
