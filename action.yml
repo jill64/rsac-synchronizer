@@ -5,11 +5,6 @@ inputs:
   payload:
     description: Octoflare Payload
     required: true
-  root-config:
-    description: Root configuration file
-    required: true
-  rsac_token:
-    description: GitHub App Root Token
 
 runs:
   using: node16

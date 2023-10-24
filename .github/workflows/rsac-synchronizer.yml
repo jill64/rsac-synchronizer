@@ -7,40 +7,18 @@ on:
         required: true
       ref:
         required: true
-      rsac_token:
-        required: false
-
-env:
-  owner: ${{ fromJson(inputs.payload).owner }}
-  repo: ${{ fromJson(inputs.payload).repo }}
 
 jobs:
   synchronize:
     runs-on: ubuntu-latest
     steps:
-      - name: Root Checkout
-        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4
-        with:
-          repository: ${{ env.owner }}/.github
-
-      - name: Get Config
-        if: ${{ !cancelled() }}
-        uses: gh640/command-result-action@85ac60c7aae33f8f63e07a34907e4ca573e23bfd # v1
-        with:
-          command: cat rsac.yml
-        id: root-config
-
       - name: Checkout
-        if: ${{ !cancelled() }}
         uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4
         with:
-          repository: ${{ env.owner }}/${{ env.repo }}
+          repository: ${{ fromJson(inputs.payload).owner }}/${{ fromJson(inputs.payload).repo }}
           ref: ${{ inputs.ref }}
 
       - name: Synchronize
-        if: ${{ !cancelled() }}
         uses: jill64/rsac-synchronizer@main
         with:
           payload: ${{ inputs.payload }}
-          root-config: ${{ steps.root-config.outputs.stdout }}
-          rsac_token: ${{ inputs.rsac_token }}
