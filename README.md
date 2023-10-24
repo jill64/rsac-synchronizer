@@ -1,14 +1,20 @@
+<!----- BEGIN GHOST DOCS LOGO src="./assets/logo.png" ----->
+
 <div align="center">
 <img src="./assets/logo.png" width="100px" />
 </div>
 
-# RSaC Synchronizer
+<!----- END GHOST DOCS LOGO ----->
+
+<!----- BEGIN GHOST DOCS HEADER ----->
+
+# Rsac Synchronizer
+
+[![rsac-synchronizer.yml](https://github.com/jill64/rsac-synchronizer/actions/workflows/rsac-synchronizer.yml/badge.svg)](https://github.com/jill64/rsac-synchronizer/actions/workflows/rsac-synchronizer.yml) [![github-app](https://img.shields.io/badge/GitHub_App-Rsac_Synchronizer-midnightblue)](https://github.com/apps/rsac-synchronizer) [![octoflare](https://img.shields.io/badge/framework-🌤️Octoflare-dodgerblue)](https://github.com/jill64/octoflare)
 
 GitHub Repository Settings as Code
 
-> Powered by [Octoflare](https://github.com/jill64/octoflare#readme)
-
-[GitHub App](https://github.com/apps/rsac-synchronizer)
+<!----- END GHOST DOCS HEADER ----->
 
 ## Config file resolution
 
