@@ -1,5 +1,6 @@
 import { ActionOctokit } from 'octoflare/action'
 import yaml from 'yaml'
+import { Buffer } from 'node:buffer'
 
 export const getConfig = async ({
   owner,
