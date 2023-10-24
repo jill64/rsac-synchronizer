@@ -29965,8 +29965,8 @@ var require_cloneBuffer = __commonJS({
     var freeExports = typeof exports == "object" && exports && !exports.nodeType && exports;
     var freeModule = freeExports && typeof module2 == "object" && module2 && !module2.nodeType && module2;
     var moduleExports = freeModule && freeModule.exports === freeExports;
-    var Buffer2 = moduleExports ? root.Buffer : void 0;
-    var allocUnsafe = Buffer2 ? Buffer2.allocUnsafe : void 0;
+    var Buffer3 = moduleExports ? root.Buffer : void 0;
+    var allocUnsafe = Buffer3 ? Buffer3.allocUnsafe : void 0;
     function cloneBuffer(buffer, isDeep) {
       if (isDeep) {
         return buffer.slice();
@@ -30200,8 +30200,8 @@ var require_isBuffer = __commonJS({
     var freeExports = typeof exports == "object" && exports && !exports.nodeType && exports;
     var freeModule = freeExports && typeof module2 == "object" && module2 && !module2.nodeType && module2;
     var moduleExports = freeModule && freeModule.exports === freeExports;
-    var Buffer2 = moduleExports ? root.Buffer : void 0;
-    var nativeIsBuffer = Buffer2 ? Buffer2.isBuffer : void 0;
+    var Buffer3 = moduleExports ? root.Buffer : void 0;
+    var nativeIsBuffer = Buffer3 ? Buffer3.isBuffer : void 0;
     var isBuffer = nativeIsBuffer || stubFalse;
     module2.exports = isBuffer;
   }
@@ -31023,6 +31023,7 @@ var applyConfig = async ({
 
 // action/src/utils/getComfig.ts
 var import_yaml = __toESM(require_dist2(), 1);
+var import_node_buffer = require("node:buffer");
 var getConfig = async ({
   owner,
   repo,
@@ -31037,7 +31038,7 @@ var getConfig = async ({
     if (!("type" in data && data.type === "file")) {
       return null;
     }
-    const str = data.encoding === "base64" ? Buffer.from(data.content, "base64").toString() : data.content;
+    const str = data.encoding === "base64" ? import_node_buffer.Buffer.from(data.content, "base64").toString() : data.content;
     return str ? import_yaml.default.parse(str) : null;
   } catch (error) {
     console.error(error);
