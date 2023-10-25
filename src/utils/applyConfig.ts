@@ -1,6 +1,6 @@
-import { ActionOctokit } from 'octoflare/action'
+import { Octokit } from 'octoflare/octokit'
 import { array, isObject, scanner, string } from 'typescanner'
-import { updateBranchProtection } from '../updateBranchProtection.js'
+import { updateBranchProtection } from './updateBranchProtection.js'
 
 export const applyConfig = async ({
   octokit,
@@ -8,7 +8,7 @@ export const applyConfig = async ({
   repo,
   config
 }: {
-  octokit: ActionOctokit
+  octokit: Octokit
   config: unknown
   repo: string
   owner: string
