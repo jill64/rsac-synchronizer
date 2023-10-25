@@ -2,7 +2,7 @@ import { octoflare } from 'octoflare'
 import { onCreateRepo } from './trigger/onCreateRepo.js'
 import { onPush } from './trigger/onPush.js'
 import { applyConfig } from './utils/applyConfig.js'
-import { getConfig } from './utils/getComfig.js'
+import { getConfig } from './utils/getConfig.js'
 import { mergeConfig } from './utils/mergeConfig.js'
 
 export default octoflare(async ({ installation, payload }) => {
