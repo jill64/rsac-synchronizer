@@ -31094,6 +31094,7 @@ action(async ({ octokit, payload: { owner, repo } }) => {
     repo: ".github",
     octokit
   });
+  console.log("root", rootConfig);
   const { data: repository } = await octokit.rest.repos.get({
     owner,
     repo
@@ -31109,6 +31110,8 @@ action(async ({ octokit, payload: { owner, repo } }) => {
       repo: repo2.name,
       octokit
     });
+    console.log(repo2.name, "repoConfig", repoConfig);
+    console.log(repo2.name, "mergeConfig", mergeConfig(rootConfig, repoConfig));
     await applyConfig({
       octokit,
       owner: repo2.owner.login,
