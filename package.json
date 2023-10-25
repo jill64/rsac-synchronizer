@@ -1,7 +1,8 @@
 {
   "type": "module",
   "scripts": {
-    "build": "npx wrangler deploy --dry-run",
+    "build": "npx wrangler deploy --dry-run && build:action",
+    "build:action": "npx tsx action/scripts/build.ts",
     "deploy": "npx wrangler deploy",
     "lint": "npx eslint . && tsc && npx depcheck",
     "format": "npx prettier --write ."
@@ -11,6 +12,7 @@
     "@types/node": "20.8.8",
     "@typescript-eslint/eslint-plugin": "6.9.0",
     "@typescript-eslint/parser": "6.9.0",
+    "esbuild": "^0.19.5",
     "eslint-plugin-deprecation": "2.0.0",
     "lodash": "4.17.21",
     "octoflare": "0.15.2",
