@@ -10,6 +10,8 @@ action(async ({ octokit, payload: { owner, repo } }) => {
     octokit
   })
 
+    console.log('root', rootConfig)
+
   const { data: repository } = await octokit.rest.repos.get({
     owner,
     repo
@@ -29,6 +31,9 @@ action(async ({ octokit, payload: { owner, repo } }) => {
       repo: repo.name,
       octokit
     })
+    
+    console.log(repo.name, 'repoConfig', repoConfig)
+    console.log(repo.name, 'mergeConfig',  mergeConfig(rootConfig, repoConfig))
 
     await applyConfig({
       octokit,
