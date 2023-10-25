@@ -43,9 +43,9 @@ branch-protection:
   branch-name:
     required_status_checks:
       strict: true
-      checks:
-        - lint
-        - build
+      contexts:
+        - test / run-vitest
+        - e2e-test / run-playwright
 
 #https://docs.github.com/en/rest/repos/repos#replace-all-repository-topics
 
