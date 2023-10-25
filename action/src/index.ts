@@ -32,8 +32,12 @@ action(async ({ octokit, payload: { owner, repo } }) => {
       octokit
     })
 
-    console.log(repo.name, 'repoConfig', repoConfig)
-    console.log(repo.name, 'mergeConfig', mergeConfig(rootConfig, repoConfig))
+    console.log(repo.name, 'repoConfig', JSON.stringify(repoConfig, null, 2))
+    console.log(
+      repo.name,
+      'mergeConfig',
+      JSON.stringify(mergeConfig(rootConfig, repoConfig), null, 2)
+    )
 
     await applyConfig({
       octokit,
