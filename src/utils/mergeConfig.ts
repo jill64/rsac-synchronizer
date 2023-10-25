@@ -7,4 +7,6 @@ export const mergeConfig = async (rootConfig: unknown, repoConfig: unknown) =>
           return [...new Set([...a, ...b])]
         }
       })
-    : rootConfig ? repoConfig : null
+    : rootConfig
+    ? repoConfig
+    : null
