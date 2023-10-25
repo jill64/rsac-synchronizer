@@ -22,10 +22,7 @@ export const getConfig = async ({
       return null
     }
 
-    const str =
-      data.encoding === 'base64'
-        ? Buffer.from(data.content, 'base64').toString()
-        : data.content
+    const str = Buffer.from(data.content, data.encoding).toString()
 
     return str ? (yaml.parse(str) as unknown) : null
   } catch (error) {
