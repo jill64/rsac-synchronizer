@@ -1,6 +1,6 @@
-import { Octokit } from 'octoflare/octokit'
-import yaml from 'yaml'
 import { Buffer } from 'node:buffer'
+import { ActionOctokit } from 'octoflare/action'
+import yaml from 'yaml'
 
 export const getConfig = async ({
   owner,
@@ -9,7 +9,7 @@ export const getConfig = async ({
 }: {
   owner: string
   repo: string
-  octokit: Octokit
+  octokit: ActionOctokit
 }) => {
   try {
     const { data } = await octokit.rest.repos.getContent({
