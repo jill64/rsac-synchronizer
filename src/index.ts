@@ -1,9 +1,9 @@
 import { octoflare } from 'octoflare'
+import { applyConfig } from '../lib/applyConfig.js'
+import { getConfig } from '../lib/getConfig.js'
+import { mergeConfig } from '../lib/mergeConfig.js'
 import { onCreateRepo } from './trigger/onCreateRepo.js'
 import { onPush } from './trigger/onPush.js'
-import { applyConfig } from './utils/applyConfig.js'
-import { getConfig } from './utils/getConfig.js'
-import { mergeConfig } from './utils/mergeConfig.js'
 
 export default octoflare(async ({ installation, payload }) => {
   const event = onPush(payload) ?? onCreateRepo(payload)
@@ -23,18 +23,19 @@ export default octoflare(async ({ installation, payload }) => {
   const { owner, repo } = event
   const octokit = installation.kit
 
-  const rootConfig = await getConfig({
-    owner,
-    repo: '.github',
-    octokit
-  })
-
   if (repo !== '.github') {
-    const repoConfig = await getConfig({
-      owner,
-      repo,
-      octokit
-    })
+    const [rootConfig, repoConfig] = await Promise.all([
+      getConfig({
+        owner,
+        repo: '.github',
+        octokit
+      }),
+      getConfig({
+        owner,
+        repo,
+        octokit
+      })
+    ])
 
     await applyConfig({
       octokit,
@@ -48,37 +49,14 @@ export default octoflare(async ({ installation, payload }) => {
     })
   }
 
-  const { data: repository } = await octokit.rest.repos.get({
-    owner,
-    repo
+  await installation.startWorkflow({
+    payload: {
+      owner,
+      repo
+    }
   })
 
-  const { data: allRepo } = await (repository.owner.type !== 'Organization'
-    ? octokit.rest.repos.listForUser({
-        username: owner
-      })
-    : octokit.rest.repos.listForOrg({
-        org: owner
-      }))
-
-  const result = allRepo.map(async (repo) => {
-    const repoConfig = await getConfig({
-      owner: repo.owner.login,
-      repo: repo.name,
-      octokit
-    })
-
-    await applyConfig({
-      octokit,
-      owner: repo.owner.login,
-      repo: repo.name,
-      config: mergeConfig(rootConfig, repoConfig)
-    })
-  })
-
-  await Promise.all(result)
-
-  return new Response('Complete Synchronize for All Repo', {
-    status: 200
+  return new Response('Dispatch Workflow: Synchronize All Repo', {
+    status: 202
   })
 })
