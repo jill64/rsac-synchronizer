@@ -1,7 +1,7 @@
 {
   "type": "module",
   "scripts": {
-    "build": "npx wrangler deploy --dry-run && build:action",
+    "build": "npx wrangler deploy --dry-run && npm run build:action",
     "build:action": "npx tsx action/scripts/build.ts",
     "deploy": "npx wrangler deploy",
     "lint": "npx eslint . && tsc && npx depcheck",
