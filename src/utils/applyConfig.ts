@@ -13,11 +13,6 @@ export const applyConfig = async ({
   repo: string
   owner: string
 }) => {
-  if (!isObject(config)) {
-    console.log('No configuration file found')
-    return
-  }
-
   const existRepository = scanner({
     repository: isObject
   })
