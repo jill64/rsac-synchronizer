@@ -31089,16 +31089,17 @@ var mergeConfig = (rootConfig, repoConfig) => rootConfig || repoConfig ? (0, imp
 
 // action/src/index.ts
 action(async ({ octokit, payload: { owner, repo } }) => {
-  const rootConfig = await getConfig({
-    owner,
-    repo: ".github",
-    octokit
-  });
-  console.log("root", rootConfig);
-  const { data: repository } = await octokit.rest.repos.get({
-    owner,
-    repo
-  });
+  const [rootConfig, { data: repository }] = await Promise.all([
+    getConfig({
+      owner,
+      repo: ".github",
+      octokit
+    }),
+    octokit.rest.repos.get({
+      owner,
+      repo
+    })
+  ]);
   const { data: allRepo } = await (repository.owner.type !== "Organization" ? octokit.rest.repos.listForUser({
     username: owner
   }) : octokit.rest.repos.listForOrg({
@@ -31110,12 +31111,6 @@ action(async ({ octokit, payload: { owner, repo } }) => {
       repo: repo2.name,
       octokit
     });
-    console.log(repo2.name, "repoConfig", JSON.stringify(repoConfig, null, 2));
-    console.log(
-      repo2.name,
-      "mergeConfig",
-      JSON.stringify(mergeConfig(rootConfig, repoConfig), null, 2)
-    );
     await applyConfig({
       octokit,
       owner: repo2.owner.login,
