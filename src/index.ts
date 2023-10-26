@@ -23,6 +23,16 @@ export default octoflare(async ({ installation, payload }) => {
   const { owner, repo } = event
   const octokit = installation.kit
 
+  const checkRun =
+    'after' in payload
+      ? await installation.createCheckRun({
+          owner,
+          repo,
+          name: 'Repository Setting Synchronize',
+          head_sha: payload.after
+        })
+      : null
+
   if (repo !== '.github') {
     const [rootConfig, repoConfig] = await Promise.all([
       getConfig({
@@ -44,17 +54,20 @@ export default octoflare(async ({ installation, payload }) => {
       config: mergeConfig(rootConfig, repoConfig)
     })
 
-    return new Response('Complete Synchronize', {
-      status: 200
-    })
+    return checkRun
+      ? 'success'
+      : new Response('Complete Synchronize', {
+          status: 200
+        })
   }
 
-  await installation.startWorkflow({
-    payload: {
-      owner,
-      repo
-    }
-  })
+  await (checkRun?.dispatchWorkflow() ??
+    installation.startWorkflow({
+      payload: {
+        owner,
+        repo
+      }
+    }))
 
   return new Response('Dispatch Workflow: Synchronize All Repo', {
     status: 202
