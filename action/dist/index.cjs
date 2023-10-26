@@ -19293,9 +19293,9 @@ var require_dist_node8 = __commonJS({
   }
 });
 
-// node_modules/.pnpm/@octokit+plugin-rest-endpoint-methods@10.1.0_@octokit+core@5.0.1/node_modules/@octokit/plugin-rest-endpoint-methods/dist-node/index.js
+// node_modules/.pnpm/@octokit+plugin-rest-endpoint-methods@10.1.1_@octokit+core@5.0.1/node_modules/@octokit/plugin-rest-endpoint-methods/dist-node/index.js
 var require_dist_node9 = __commonJS({
-  "node_modules/.pnpm/@octokit+plugin-rest-endpoint-methods@10.1.0_@octokit+core@5.0.1/node_modules/@octokit/plugin-rest-endpoint-methods/dist-node/index.js"(exports, module2) {
+  "node_modules/.pnpm/@octokit+plugin-rest-endpoint-methods@10.1.1_@octokit+core@5.0.1/node_modules/@octokit/plugin-rest-endpoint-methods/dist-node/index.js"(exports, module2) {
     "use strict";
     var __defProp2 = Object.defineProperty;
     var __getOwnPropDesc2 = Object.getOwnPropertyDescriptor;
@@ -19320,7 +19320,7 @@ var require_dist_node9 = __commonJS({
       restEndpointMethods: () => restEndpointMethods
     });
     module2.exports = __toCommonJS2(dist_src_exports);
-    var VERSION = "10.1.0";
+    var VERSION = "10.1.1";
     var Endpoints = {
       actions: {
         addCustomLabelsToSelfHostedRunnerForOrg: [
@@ -21390,9 +21390,9 @@ var require_dist_node9 = __commonJS({
   }
 });
 
-// node_modules/.pnpm/@octokit+plugin-paginate-rest@9.1.0_@octokit+core@5.0.1/node_modules/@octokit/plugin-paginate-rest/dist-node/index.js
+// node_modules/.pnpm/@octokit+plugin-paginate-rest@9.1.1_@octokit+core@5.0.1/node_modules/@octokit/plugin-paginate-rest/dist-node/index.js
 var require_dist_node10 = __commonJS({
-  "node_modules/.pnpm/@octokit+plugin-paginate-rest@9.1.0_@octokit+core@5.0.1/node_modules/@octokit/plugin-paginate-rest/dist-node/index.js"(exports, module2) {
+  "node_modules/.pnpm/@octokit+plugin-paginate-rest@9.1.1_@octokit+core@5.0.1/node_modules/@octokit/plugin-paginate-rest/dist-node/index.js"(exports, module2) {
     "use strict";
     var __defProp2 = Object.defineProperty;
     var __getOwnPropDesc2 = Object.getOwnPropertyDescriptor;
@@ -21419,7 +21419,7 @@ var require_dist_node10 = __commonJS({
       paginatingEndpoints: () => paginatingEndpoints
     });
     module2.exports = __toCommonJS2(dist_src_exports);
-    var VERSION = "9.1.0";
+    var VERSION = "9.1.1";
     function normalizePaginatedListResponse(response) {
       if (!response.data) {
         return {
