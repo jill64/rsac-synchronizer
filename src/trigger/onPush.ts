@@ -15,11 +15,8 @@ export const onPush = (payload: WebhookEvent) => {
     return null
   }
 
-  const isTriggered = commits.some(
-    (commit) =>
-      commit.modified.includes('rsac.yml') ||
-      commit.added.includes('rsac.yml') ||
-      commit.removed.includes('rsac.yml')
+  const isTriggered = commits.some(({ modified, added, removed }) =>
+    [...modified, ...added, ...removed].includes('rsac.yml')
   )
 
   if (!isTriggered) {
@@ -29,6 +26,7 @@ export const onPush = (payload: WebhookEvent) => {
   return {
     repo,
     owner,
-    ref
+    ref,
+    sha: payload.after
   }
 }
