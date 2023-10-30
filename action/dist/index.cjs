@@ -18243,9 +18243,9 @@ var require_is_plain_object = __commonJS({
   }
 });
 
-// node_modules/.pnpm/@octokit+endpoint@9.0.1/node_modules/@octokit/endpoint/dist-node/index.js
+// node_modules/.pnpm/@octokit+endpoint@9.0.2/node_modules/@octokit/endpoint/dist-node/index.js
 var require_dist_node2 = __commonJS({
-  "node_modules/.pnpm/@octokit+endpoint@9.0.1/node_modules/@octokit/endpoint/dist-node/index.js"(exports, module2) {
+  "node_modules/.pnpm/@octokit+endpoint@9.0.2/node_modules/@octokit/endpoint/dist-node/index.js"(exports, module2) {
     "use strict";
     var __defProp2 = Object.defineProperty;
     var __getOwnPropDesc2 = Object.getOwnPropertyDescriptor;
@@ -18270,7 +18270,7 @@ var require_dist_node2 = __commonJS({
     });
     module2.exports = __toCommonJS2(dist_src_exports);
     var import_universal_user_agent = require_dist_node();
-    var VERSION = "9.0.1";
+    var VERSION = "9.0.2";
     var userAgent = `octokit-endpoint.js/${VERSION} ${(0, import_universal_user_agent.getUserAgent)()}`;
     var DEFAULTS = {
       method: "GET",
@@ -18460,7 +18460,7 @@ var require_dist_node2 = __commonJS({
     }
     function expand(template, context) {
       var operators = ["+", "#", ".", "/", ";", "?", "&"];
-      return template.replace(
+      template = template.replace(
         /\{([^\{\}]+)\}|([^\{\}]+)/g,
         function(_, expression, literal) {
           if (expression) {
@@ -18490,6 +18490,11 @@ var require_dist_node2 = __commonJS({
           }
         }
       );
+      if (template === "/") {
+        return template;
+      } else {
+        return template.replace(/\/$/, "");
+      }
     }
     function parse2(options) {
       let method = options.method.toUpperCase();
