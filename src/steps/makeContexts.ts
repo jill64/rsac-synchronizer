@@ -84,11 +84,11 @@ export const makeContexts = async ({
     'Version Integrity'
   ]
 
-  const build = packageJson?.data?.devDependencies?.[
+  const cloudflare = packageJson?.data?.devDependencies?.[
     '@sveltejs/adapter-cloudflare'
   ]
-    ? 'Cloudflare Pages'
-    : 'Ghost Build'
+    ? ['Cloudflare Pages']
+    : []
 
-  return [...new Set([...defaultChecks, ...workflows, build])]
+  return [...new Set([...defaultChecks, ...workflows, ...cloudflare])]
 }
