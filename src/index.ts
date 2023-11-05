@@ -1,14 +1,8 @@
 import { octoflare } from 'octoflare'
-import { applyConfig } from '../lib/applyConfig.js'
-import { getConfig } from '../lib/getConfig.js'
-import { mergeConfig } from '../lib/mergeConfig.js'
-import { onCreateRepo } from './trigger/onCreateRepo.js'
-import { onPush } from './trigger/onPush.js'
+import { makeContexts } from './steps/makeContexts.js'
 
 export default octoflare(async ({ installation, payload }) => {
-  const event = onPush(payload) ?? onCreateRepo(payload)
-
-  if (!event) {
+  if (!('repository' in payload && payload.repository)) {
     return new Response('No Trigger Event', {
       status: 200
     })
@@ -20,56 +14,55 @@ export default octoflare(async ({ installation, payload }) => {
     })
   }
 
-  const { owner, repo } = event
+  const { repository } = payload
+
   const octokit = installation.kit
+  const owner = repository.owner.login
+  const repo = repository.name
+  const ref = repository.default_branch
 
-  const checkRun =
-    'after' in payload
-      ? await installation.createCheckRun({
-          owner,
-          repo,
-          name: 'Repository Setting Synchronize',
-          head_sha: payload.after
-        })
-      : null
+  const contexts = await makeContexts({ owner, repo, ref, octokit })
 
-  if (repo !== '.github') {
-    const [rootConfig, repoConfig] = await Promise.all([
-      getConfig({
-        owner,
-        repo: '.github',
-        octokit
-      }),
-      getConfig({
-        owner,
-        repo,
-        octokit
-      })
-    ])
-
-    await applyConfig({
-      octokit,
+  const process = [
+    octokit.rest.repos.update({
       owner,
       repo,
-      config: mergeConfig(rootConfig, repoConfig)
+      has_projects: false,
+      has_wiki: false,
+      allow_squash_merge: false,
+      allow_rebase_merge: false,
+      allow_auto_merge: true,
+      delete_branch_on_merge: true,
+      allow_update_branch: true
+    }),
+    octokit.rest.repos.updateBranchProtection({
+      owner,
+      repo,
+      branch: ref,
+      required_status_checks: {
+        strict: true,
+        contexts
+      },
+      enforce_admins: true,
+      required_pull_request_reviews: {
+        required_approving_review_count: 0
+      },
+      restrictions: null,
+      allow_deletions: false,
+      lock_branch: false,
+      allow_force_pushes: false
+    }),
+    octokit.rest.actions.setGithubActionsDefaultWorkflowPermissionsRepository({
+      owner,
+      repo,
+      default_workflow_permissions: 'read',
+      can_approve_pull_request_reviews: false
     })
+  ]
 
-    return checkRun
-      ? 'success'
-      : new Response('Complete Synchronize', {
-          status: 200
-        })
-  }
+  await Promise.all(process)
 
-  await (checkRun?.dispatchWorkflow() ??
-    installation.startWorkflow({
-      payload: {
-        owner,
-        repo
-      }
-    }))
-
-  return new Response('Dispatch Workflow: Synchronize All Repo', {
-    status: 202
+  return new Response('Complete Synchronize', {
+    status: 200
   })
 })
