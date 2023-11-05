@@ -1,7 +1,6 @@
-import { Octokit } from 'octoflare/octokit'
+import { attempt } from '@jill64/attempt'
+import { OctoflareInstallation } from 'octoflare'
 import yaml from 'yaml'
-import { getDirFiles } from '../utils/getDirFiles.js'
-import { getFile } from '../utils/getFile.js'
 import { isValidPackageJson } from '../utils/isValidPackageJson.js'
 import { isValidWorkflow } from '../utils/isValidWorkflow.js'
 import { pickReusableWfName } from '../utils/pickReusableWfName.js'
@@ -10,42 +9,51 @@ export const makeContexts = async ({
   owner,
   repo,
   ref,
-  octokit
+  installation
 }: {
   owner: string
   repo: string
   ref: string
-  octokit: Octokit
+  installation: OctoflareInstallation
 }): Promise<string[]> => {
   const [files, packageJson] = await Promise.all([
-    getDirFiles({
-      owner,
-      repo,
-      path: '.github/workflows',
-      ref,
-      octokit
-    }).then((files) =>
-      files.map((file) => {
-        try {
-          const yml = file ? yaml.parse(file) : null
-          return isValidWorkflow(yml) ? yml : null
-        } catch {
-          return null
-        }
+    attempt(async () => {
+      const { data } = await installation.kit.rest.repos.getContent({
+        owner,
+        repo,
+        path: '.github/workflows',
+        ref
       })
-    ),
-    getFile({
-      owner,
-      repo,
-      path: 'package.json',
+
+      if (!Array.isArray(data)) {
+        return []
+      }
+
+      const result = data.map(({ path }) =>
+        installation.getFile(path, {
+          ref,
+          parser: (str) => {
+            const yml = yaml.parse(str)
+
+            if (!isValidWorkflow(yml)) {
+              throw new Error(`Invalid workflow: ${path}`)
+            }
+
+            return yml
+          }
+        })
+      )
+
+      const list = await Promise.all(result)
+
+      return list.map((x) => x?.data)
+    }, []),
+
+    installation.getFile('package.json', {
       ref,
-      octokit
-    }).then((str) => {
-      try {
+      parser: (str) => {
         const json = str ? JSON.parse(str) : null
         return isValidPackageJson(json) ? json : null
-      } catch {
-        return null
       }
     })
   ])
@@ -76,7 +84,9 @@ export const makeContexts = async ({
     'Version Integrity'
   ]
 
-  const build = packageJson?.devDependencies?.['@sveltejs/adapter-cloudflare']
+  const build = packageJson?.data?.devDependencies?.[
+    '@sveltejs/adapter-cloudflare'
+  ]
     ? 'Cloudflare Pages'
     : 'Ghost Build'
 

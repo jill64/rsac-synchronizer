@@ -21,7 +21,7 @@ export default octoflare(async ({ installation, payload }) => {
   const repo = repository.name
   const ref = repository.default_branch
 
-  const contexts = await makeContexts({ owner, repo, ref, octokit })
+  const contexts = await makeContexts({ owner, repo, ref, installation })
 
   const process = [
     octokit.rest.repos.update({
