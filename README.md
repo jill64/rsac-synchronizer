@@ -47,7 +47,7 @@ branch-protection:
         - test / run-vitest
         - e2e-test / run-playwright
 
-#https://docs.github.com/en/rest/repos/repos#replace-all-repository-topics
+# https://docs.github.com/en/rest/repos/repos#replace-all-repository-topics
 
 topics:
   - topic-name-1
