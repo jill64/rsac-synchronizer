@@ -10,7 +10,7 @@
 
 # Rsac Synchronizer
 
-[![github-app](https://img.shields.io/badge/GitHub_App-Rsac_Synchronizer-midnightblue)](https://github.com/apps/rsac-synchronizer) [![octoflare](https://img.shields.io/badge/framework-🌤️Octoflare-dodgerblue)](https://github.com/jill64/octoflare)
+[![ci.yml](https://github.com/jill64/rsac-synchronizer/actions/workflows/ci.yml/badge.svg)](https://github.com/jill64/rsac-synchronizer/actions/workflows/ci.yml) [![codecov-coverage](https://codecov.io/gh/jill64/rsac-synchronizer/graph/badge.svg)](https://codecov.io/gh/jill64/rsac-synchronizer) [![github-app](https://img.shields.io/badge/GitHub_App-Rsac_Synchronizer-midnightblue)](https://github.com/apps/rsac-synchronizer) [![octoflare](https://img.shields.io/badge/framework-🌤️Octoflare-dodgerblue)](https://github.com/jill64/octoflare)
 
 ⚙️ Automated Repository Settings
 
