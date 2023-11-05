@@ -1,21 +1,25 @@
 import { Buffer } from 'node:buffer'
-import { ActionOctokit } from 'octoflare/action'
-import yaml from 'yaml'
+import { Octokit } from 'octoflare/octokit'
 
-export const getConfig = async ({
-  owner,
+export const getFile = async ({
+  octokit,
   repo,
-  octokit
+  owner,
+  path,
+  ref
 }: {
-  owner: string
+  octokit: Octokit
   repo: string
-  octokit: ActionOctokit
+  owner: string
+  path: string
+  ref: string
 }) => {
   try {
     const { data } = await octokit.rest.repos.getContent({
       owner,
       repo,
-      path: 'rsac.yml'
+      path,
+      ref
     })
 
     if (!('type' in data && data.type === 'file')) {
@@ -27,9 +31,9 @@ export const getConfig = async ({
         ? Buffer.from(data.content, 'base64').toString()
         : data.content
 
-    return str ? (yaml.parse(str) as unknown) : null
-  } catch (error) {
-    console.error(error)
+    return str
+  } catch (e) {
+    console.error(e)
     return null
   }
 }
