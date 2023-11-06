@@ -2,7 +2,7 @@ import { octoflare } from 'octoflare'
 import { makeContexts } from './steps/makeContexts.js'
 
 export default octoflare(async ({ installation, payload }) => {
-  if (!('repository' in payload && payload.repository)) {
+  if (!('commits' in payload)) {
     return new Response('No Trigger Event', {
       status: 200
     })
@@ -14,12 +14,29 @@ export default octoflare(async ({ installation, payload }) => {
     })
   }
 
-  const { repository } = payload
+  const { repository, commits, ref } = payload
+
+  if (ref.replace('refs/heads/', '') !== repository.default_branch) {
+    return new Response('Not Default Branch', {
+      status: 200
+    })
+  }
+
+  const isTriggered = commits.some(({ added, removed, modified }) =>
+    [...added, ...removed, ...modified].some(
+      (path) => path === '.github/workflows' || path === 'package.json'
+    )
+  )
+
+  if (!isTriggered) {
+    return new Response('Not Triggered', {
+      status: 200
+    })
+  }
 
   const octokit = installation.kit
   const owner = repository.owner.login
   const repo = repository.name
-  const ref = repository.default_branch
 
   const contexts = await makeContexts({ owner, repo, ref, installation })
 
