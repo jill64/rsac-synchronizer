@@ -81,7 +81,7 @@ export const makeContexts = async ({
     'Ghost Lint',
     'Ghost Build',
     'Ghost Format',
-    'Version Integrity'
+    'Ghost Bump'
   ]
 
   const cloudflare = packageJson?.data?.devDependencies?.[
