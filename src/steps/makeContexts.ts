@@ -78,10 +78,8 @@ export const makeContexts = async ({
     .filter((x) => x)
 
   const defaultChecks = [
-    'Ghost Lint',
-    'Ghost Build',
-    'Ghost Format',
-    'Ghost Bump'
+    'Wraith CI',
+    'Wraith CI - PR'
   ]
 
   const cloudflare = packageJson?.data?.devDependencies?.[
