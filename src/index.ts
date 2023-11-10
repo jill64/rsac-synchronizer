@@ -1,47 +1,32 @@
 import { octoflare } from 'octoflare'
-import { makeContexts } from './steps/makeContexts.js'
 
 export default octoflare(async ({ installation, payload }) => {
-  if (!('commits' in payload)) {
-    return new Response('No Trigger Event', {
-      status: 200
-    })
-  }
-
   if (!installation) {
     return new Response('No Installation', {
       status: 200
     })
   }
 
-  const { repository, commits, ref } = payload
-
-  if (ref.replace('refs/heads/', '') !== repository.default_branch) {
-    return new Response('Not Default Branch', {
-      status: 200
-    })
-  }
-
-  const isTriggered = commits.some(({ added, removed, modified }) =>
-    [...added, ...removed, ...modified].some(
-      (path) => path === '.github/workflows' || path === 'package.json'
+  if (
+    !(
+      'repository' in payload &&
+      payload.repository &&
+      'action' in payload &&
+      payload.action === 'created'
     )
-  )
-
-  if (!isTriggered) {
-    return new Response('Not Triggered', {
+  ) {
+    return new Response('No Trigger Event', {
       status: 200
     })
   }
 
-  const octokit = installation.kit
+  const { repository } = payload
+
   const owner = repository.owner.login
   const repo = repository.name
 
-  const contexts = await makeContexts({ owner, repo, ref, installation })
-
   const process = [
-    octokit.rest.repos.update({
+    installation.kit.rest.repos.update({
       owner,
       repo,
       has_projects: false,
@@ -52,13 +37,13 @@ export default octoflare(async ({ installation, payload }) => {
       delete_branch_on_merge: true,
       allow_update_branch: true
     }),
-    octokit.rest.repos.updateBranchProtection({
+    installation.kit.rest.repos.updateBranchProtection({
       owner,
       repo,
-      branch: ref,
+      branch: repository.default_branch,
       required_status_checks: {
         strict: true,
-        contexts
+        contexts: ['Wraith CI', 'Wraith CI / PR']
       },
       enforce_admins: true,
       required_pull_request_reviews: {
@@ -69,17 +54,19 @@ export default octoflare(async ({ installation, payload }) => {
       lock_branch: false,
       allow_force_pushes: false
     }),
-    octokit.rest.actions.setGithubActionsDefaultWorkflowPermissionsRepository({
-      owner,
-      repo,
-      default_workflow_permissions: 'read',
-      can_approve_pull_request_reviews: false
-    })
+    installation.kit.rest.actions.setGithubActionsDefaultWorkflowPermissionsRepository(
+      {
+        owner,
+        repo,
+        default_workflow_permissions: 'read',
+        can_approve_pull_request_reviews: false
+      }
+    )
   ]
 
   await Promise.all(process)
 
-  return new Response('Complete Synchronize', {
+  return new Response('Bootstrap Complete', {
     status: 200
   })
 })
