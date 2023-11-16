@@ -7,7 +7,14 @@ export default octoflare(async ({ installation, payload }) => {
     })
   }
 
-  if (!(payload.action === 'created')) {
+  if (
+    !(
+      'action' in payload &&
+      'repository' in payload &&
+      payload.action === 'created' &&
+      payload.repository
+    )
+  ) {
     return new Response('No Trigger Event', {
       status: 200
     })
