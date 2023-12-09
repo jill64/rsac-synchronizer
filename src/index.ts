@@ -34,7 +34,12 @@ export default octoflare(async ({ installation, payload }) => {
           branch: 'main',
           required_status_checks: {
             strict: true,
-            contexts: ['Wraith CI', 'Wraith CI / PR']
+            contexts: [
+              'Wraith CI',
+              'Wraith CI / PR',
+              'Socket Security: Project Report',
+              'Socket Security: Pull Request Alerts'
+            ]
           },
           enforce_admins: true,
           required_pull_request_reviews: {
