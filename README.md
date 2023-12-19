@@ -15,3 +15,4 @@
 🚀 Accelerate Repository Startup
 
 <!----- END GHOST DOCS HEADER ----->
+<!----- BEGIN GHOST DOCS FOOTER -----><!----- END GHOST DOCS FOOTER ----->
