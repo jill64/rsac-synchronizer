@@ -1,11 +1,3 @@
-<!----- BEGIN GHOST DOCS LOGO src="./assets/logo.png" ----->
-
-<div align="center">
-<img src="./assets/logo.png" width="100px" />
-</div>
-
-<!----- END GHOST DOCS LOGO ----->
-
 <!----- BEGIN GHOST DOCS HEADER ----->
 
 # repo-bootstrapper
