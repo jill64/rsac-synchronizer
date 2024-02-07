@@ -1,4 +1,5 @@
 import { octoflare } from 'octoflare'
+import { syncLabels } from './syncLabels.js'
 
 export default octoflare(async ({ installation, payload }) => {
   if (!installation) {
@@ -52,7 +53,12 @@ export default octoflare(async ({ installation, payload }) => {
             default_workflow_permissions: 'read',
             can_approve_pull_request_reviews: false
           }
-        )
+        ),
+        syncLabels({
+          owner,
+          repo,
+          kit: installation.kit
+        })
       ])
     })
   )
