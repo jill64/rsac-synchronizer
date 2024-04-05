@@ -10,7 +10,7 @@
   "devDependencies": {
     "@jill64/eslint-config-ts": "1.1.16",
     "@jill64/prettier-config": "1.0.0",
-    "octoflare": "0.24.26",
+    "octoflare": "0.24.27",
     "typescript": "5.4.4"
   }
 }
